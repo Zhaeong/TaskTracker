@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">WorkTracker</string>
+
+    <string name="top_text">Text at top</string>
+</resources>
