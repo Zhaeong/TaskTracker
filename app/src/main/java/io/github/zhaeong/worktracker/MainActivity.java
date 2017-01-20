@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     private ListView mListView;
-    private ArrayList<String> ListValues = new ArrayList<String>();
+    private ArrayList ListValues = new ArrayList<>();
 
 
 
@@ -26,8 +26,8 @@ public class MainActivity extends AppCompatActivity {
 
     protected void populateList()
     {
-        ArrayAdapter<String> adapter =
-                new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, ListValues);
+        ArrayAdapter adapter =
+                new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, ListValues);
         mListView = (ListView) findViewById(R.id.task_list);
         mListView.setAdapter(adapter);
     }
@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
             if(resultCode == RESULT_OK){
                 String message = data.getStringExtra(AddTaskMenu.EXTRA_MESSAGE);
                 ListValues.add(message);
+                populateList();
             }
             if (resultCode == RESULT_CANCELED) {
                 // do something if there is no result

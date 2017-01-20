@@ -25,8 +25,6 @@ public class AddTaskMenu extends AppCompatActivity {
         intent.putExtra(EXTRA_MESSAGE, message);
         setResult(RESULT_OK, intent);
         finish();
-
         }
-
     }
 
