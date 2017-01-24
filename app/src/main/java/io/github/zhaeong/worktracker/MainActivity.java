@@ -23,12 +23,19 @@ public class MainActivity extends AppCompatActivity {
     public final static String TASK_NAME = "com.example.mainactivity.TASKNAME";
     public final static String TASK_DESCRIPTION = "com.example.mainactivity.TASKDESC";
     public final static String TASK_POSITION = "com.example.mainactivity.TASKPOSIT";
+    private CustomDBHelper myTaskDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        initiateDatabase();
         populateList();
+    }
+
+    protected void initiateDatabase()
+    {
+        myTaskDatabase = new CustomDBHelper(this);
     }
 
     protected void populateList()
