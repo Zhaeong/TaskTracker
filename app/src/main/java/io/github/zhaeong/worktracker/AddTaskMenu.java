@@ -15,9 +15,9 @@ public class AddTaskMenu extends AppCompatActivity {
 
     public final static String TASK_NAME_MENU = "com.example.addtaskmenu.TASKNAME";
     public final static String TASK_DESCRIPTION_MENU = "com.example.addtaskmenu.TASKDESC";
-    public final static String TASK_POSITION_MENU = "com.example.addtaskmenu.TASKPOSIT";
+    public final static String TASK_ID_MENU = "com.example.addtaskmenu.TASKID";
 
-    private int taskPosit = -1;
+    private long taskID = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +27,7 @@ public class AddTaskMenu extends AppCompatActivity {
         Intent intent = getIntent();
         String taskName = intent.getStringExtra(MainActivity.TASK_NAME);
         String taskDesc = intent.getStringExtra(MainActivity.TASK_DESCRIPTION);
-        taskPosit = intent.getIntExtra(MainActivity.TASK_POSITION, -1);
+        taskID = intent.getIntExtra(MainActivity.TASK_ID, -1);
 
         EditText editText_taskName = (EditText) findViewById(R.id.task_name);
         EditText editText_taskDesc = (EditText) findViewById(R.id.task_description);
@@ -47,9 +47,9 @@ public class AddTaskMenu extends AppCompatActivity {
 
         intent.putExtra(TASK_NAME_MENU, taskName);
         intent.putExtra(TASK_DESCRIPTION_MENU, taskDesc);
-        intent.putExtra(TASK_POSITION_MENU, taskPosit);
+        intent.putExtra(TASK_ID_MENU, taskID);
         //Not an existing task, so create a new task
-        if(taskPosit == -1) {
+        if(taskID == -1) {
             setResult(RESULT_ADD, intent);
         }
         else

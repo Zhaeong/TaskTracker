@@ -19,6 +19,7 @@ public class CustomDBHelper extends SQLiteOpenHelper {
     public static final int DATABASE_VERSION = 1;
 
     public static final String TASKS_TABLE_NAME = "TASKS";
+    public static final String TASKS_COL_ID = "_id";
     public static final String TASKS_COL_NAME = "TaskName";
     public static final String TASKS_COL_DESC = "TaskDesc";
 
@@ -26,7 +27,7 @@ public class CustomDBHelper extends SQLiteOpenHelper {
     public static final String TABLE_CREATE_STATEMENT =
             "CREATE TABLE " +
             TASKS_TABLE_NAME +
-            "( TaskId integer primary key, " +
+            "( " + TASKS_COL_ID + " integer PRIMARY KEY, " +
             TASKS_COL_NAME +
             " TEXT, " +
             TASKS_COL_DESC +
@@ -57,15 +58,15 @@ public class CustomDBHelper extends SQLiteOpenHelper {
         return true;
     }
 
-    public boolean updateTask (Integer task_id, String taskName, String taskDesc) {
+    public boolean updateTask (Long task_id, String taskName, String taskDesc) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(TASKS_COL_NAME, taskName);
         contentValues.put(TASKS_COL_DESC, taskDesc);
-        db.update(TASKS_TABLE_NAME, contentValues, "TaskId  = ? ", new String[] { Integer.toString(task_id) } );
+        db.update(TASKS_TABLE_NAME, contentValues, "TaskId  = ? ", new String[] { Long.toString(task_id) } );
         return true;
     }
-
+/*
     public ArrayList<TaskObject> getAlltasks()
     {
         ArrayList<TaskObject> TOlist = new ArrayList<TaskObject>();
@@ -93,5 +94,10 @@ public class CustomDBHelper extends SQLiteOpenHelper {
 
         return TOlist;
     }
-
+*/
+    public Cursor getAlltasks()
+    {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery( "select * from " + TASKS_TABLE_NAME, null );
+    }
 }

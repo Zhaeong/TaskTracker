@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<TaskObject> TaskList = new ArrayList<TaskObject>();
     public final static String TASK_NAME = "com.example.mainactivity.TASKNAME";
     public final static String TASK_DESCRIPTION = "com.example.mainactivity.TASKDESC";
-    public final static String TASK_POSITION = "com.example.mainactivity.TASKPOSIT";
+    public final static String TASK_ID = "com.example.mainactivity.TASKID";
     private CustomDBHelper myTaskDatabase;
 
     @Override
@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
     protected void populateList()
     {
-        final ArrayAdapter adapter =
+        final TaskAdapter adapter =
                 new TaskAdapter(this, myTaskDatabase.getAlltasks());
         mListView = (ListView) findViewById(R.id.task_list);
         mListView.setAdapter(adapter);
@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(MainActivity.this, AddTaskMenu.class);
                 intent.putExtra(TASK_NAME, clickedTaskObj.Name);
                 intent.putExtra(TASK_DESCRIPTION, clickedTaskObj.Description);
-                intent.putExtra(TASK_POSITION, position);
+                intent.putExtra(TASK_ID, id);
 
                 startActivityForResult(intent, 1);
                 adapter.notifyDataSetChanged();
@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
             if(resultCode == RESULT_EDIT)
             {
 
-                int taskPosit = data.getIntExtra(AddTaskMenu.TASK_POSITION_MENU, -1);
+                long taskPosit = data.getIntExtra(AddTaskMenu.TASK_ID_MENU, -1);
                 if(taskPosit != -1)
                 {
                     String taskName = data.getStringExtra(AddTaskMenu.TASK_NAME_MENU);
