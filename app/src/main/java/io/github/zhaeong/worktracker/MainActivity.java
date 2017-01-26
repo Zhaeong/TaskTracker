@@ -41,9 +41,11 @@ public class MainActivity extends AppCompatActivity {
     protected void populateList()
     {
         final ArrayAdapter adapter =
-                new TaskAdapter(this, TaskList);
+                new TaskAdapter(this, myTaskDatabase.getAlltasks());
         mListView = (ListView) findViewById(R.id.task_list);
         mListView.setAdapter(adapter);
+
+
 
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -78,8 +80,9 @@ public class MainActivity extends AppCompatActivity {
                 String taskName = data.getStringExtra(AddTaskMenu.TASK_NAME_MENU);
                 String taskDesc = data.getStringExtra(AddTaskMenu.TASK_DESCRIPTION_MENU);
 
-                TaskObject taskObj = new TaskObject(taskName, taskDesc);
-                TaskList.add(taskObj);
+                //TaskObject taskObj = new TaskObject(taskName, taskDesc);
+                myTaskDatabase.addTask(taskName, taskDesc);
+                //TaskList.add(taskObj);
                 populateList();
             }
             if(resultCode == RESULT_EDIT)
@@ -91,11 +94,14 @@ public class MainActivity extends AppCompatActivity {
                     String taskName = data.getStringExtra(AddTaskMenu.TASK_NAME_MENU);
                     String taskDesc = data.getStringExtra(AddTaskMenu.TASK_DESCRIPTION_MENU);
 
+                    myTaskDatabase.updateTask(taskPosit, taskName, taskDesc);
+/*
                     TaskObject modifiedTaskobj = TaskList.get(taskPosit);
                     modifiedTaskobj.Name = taskName;
                     modifiedTaskobj.Description = taskDesc;
-                    TaskList.set(taskPosit, modifiedTaskobj);
+                    TaskList.set(taskPosit, modifiedTaskobj);*/
                     populateList();
+
                 }
 
 

@@ -2,8 +2,11 @@ package io.github.zhaeong.worktracker;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import java.util.ArrayList;
 
 /**
  * Created by owen_ on 2017-01-24.
@@ -15,12 +18,19 @@ public class CustomDBHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "TaskItems.db";
     public static final int DATABASE_VERSION = 1;
 
+    public static final String TASKS_TABLE_NAME = "TASKS";
+    public static final String TASKS_COL_NAME = "TaskName";
+    public static final String TASKS_COL_DESC = "TaskDesc";
+
+
     public static final String TABLE_CREATE_STATEMENT =
-            "CREATE TABLE" +
-            "TASKS" +
-            "TaskId integer primary key, " +
-            "TaskName TEXT, " +
-            "TaskDesc TEXT";
+            "CREATE TABLE " +
+            TASKS_TABLE_NAME +
+            "( TaskId integer primary key, " +
+            TASKS_COL_NAME +
+            " TEXT, " +
+            TASKS_COL_DESC +
+            " TEXT )";
 
     public CustomDBHelper(Context context) {
         super(context, DATABASE_NAME , null, DATABASE_VERSION);
@@ -33,17 +43,55 @@ public class CustomDBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS contacts");
+        db.execSQL("DROP TABLE IF EXISTS" + TASKS_TABLE_NAME);
         onCreate(db);
     }
 
-    public boolean insertContact (String taskName, String taskDesc) {
+    public boolean addTask (String taskName, String taskDesc) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put("TaskName", taskName);
-        contentValues.put("TaskDesc", taskDesc);
-        db.insert("TASKS", null, contentValues);
+        contentValues.put(TASKS_COL_NAME, taskName);
+        contentValues.put(TASKS_COL_DESC, taskDesc);
+        long pk = db.insert(TASKS_TABLE_NAME, null, contentValues);
+
         return true;
+    }
+
+    public boolean updateTask (Integer task_id, String taskName, String taskDesc) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(TASKS_COL_NAME, taskName);
+        contentValues.put(TASKS_COL_DESC, taskDesc);
+        db.update(TASKS_TABLE_NAME, contentValues, "TaskId  = ? ", new String[] { Integer.toString(task_id) } );
+        return true;
+    }
+
+    public ArrayList<TaskObject> getAlltasks()
+    {
+        ArrayList<TaskObject> TOlist = new ArrayList<TaskObject>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res =  db.rawQuery( "select * from " + TASKS_TABLE_NAME, null );
+        try {
+            res.moveToFirst();
+
+            while (!res.isAfterLast()) {
+
+                String taskName = res.getString(res.getColumnIndex(TASKS_COL_NAME));
+                String taskDesc = res.getString(res.getColumnIndex(TASKS_COL_DESC));
+
+                TaskObject to = new TaskObject(taskName, taskDesc);
+                TOlist.add(to);
+
+                res.moveToNext();
+            }
+        }
+        finally {
+            res.close();
+        }
+
+
+        return TOlist;
     }
 
 }
