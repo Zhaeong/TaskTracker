@@ -11,7 +11,7 @@
     tools:context="io.github.zhaeong.worktracker.MainActivity">
 
     <Button
-        android:text="@string/addnewtask"
+        android:text="@string/AddNewTask"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/add_new_task"

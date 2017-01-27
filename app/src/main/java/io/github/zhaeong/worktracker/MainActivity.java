@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
     public final static String TASK_NAME = "com.example.mainactivity.TASKNAME";
     public final static String TASK_DESCRIPTION = "com.example.mainactivity.TASKDESC";
     public final static String TASK_ID = "com.example.mainactivity.TASKID";
-    private CustomDBHelper myTaskDatabase;
+    public static CustomDBHelper myTaskDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,11 +52,12 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
 
-                TaskObject clickedTaskObj = (TaskObject) parent.getItemAtPosition(position);
+                //TaskObject clickedTaskObj = (TaskObject) parent.getItemAtPosition(position);
                 Intent intent = new Intent(MainActivity.this, AddTaskMenu.class);
-                intent.putExtra(TASK_NAME, clickedTaskObj.Name);
-                intent.putExtra(TASK_DESCRIPTION, clickedTaskObj.Description);
+                intent.putExtra(TASK_NAME, "dsfdsfdsfsdfdsfds");
+                //intent.putExtra(TASK_DESCRIPTION, clickedTaskObj.Description);
                 intent.putExtra(TASK_ID, id);
+
 
                 startActivityForResult(intent, 1);
                 adapter.notifyDataSetChanged();
@@ -88,18 +89,13 @@ public class MainActivity extends AppCompatActivity {
             if(resultCode == RESULT_EDIT)
             {
 
-                long taskPosit = data.getIntExtra(AddTaskMenu.TASK_ID_MENU, -1);
+                long taskPosit = data.getLongExtra(AddTaskMenu.TASK_ID_MENU, -1);
                 if(taskPosit != -1)
                 {
                     String taskName = data.getStringExtra(AddTaskMenu.TASK_NAME_MENU);
                     String taskDesc = data.getStringExtra(AddTaskMenu.TASK_DESCRIPTION_MENU);
 
                     myTaskDatabase.updateTask(taskPosit, taskName, taskDesc);
-/*
-                    TaskObject modifiedTaskobj = TaskList.get(taskPosit);
-                    modifiedTaskobj.Name = taskName;
-                    modifiedTaskobj.Description = taskDesc;
-                    TaskList.set(taskPosit, modifiedTaskobj);*/
                     populateList();
 
                 }
@@ -108,7 +104,9 @@ public class MainActivity extends AppCompatActivity {
             }
             if(resultCode == RESULT_DELETE)
             {
-
+                long taskPosit = data.getLongExtra(AddTaskMenu.TASK_ID_MENU, -1);
+                myTaskDatabase.deleteTask(taskPosit);
+                populateList();
             }
 
             if (resultCode == RESULT_CANCELED) {

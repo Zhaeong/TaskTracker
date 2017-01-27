@@ -1,12 +1,11 @@
 package io.github.zhaeong.worktracker;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
-
-
 
 public class AddTaskMenu extends AppCompatActivity {
     public final static int RESULT_ADD = 10001;
@@ -25,20 +24,27 @@ public class AddTaskMenu extends AppCompatActivity {
         setContentView(R.layout.activity_add_task_menu);
 
         Intent intent = getIntent();
-        String taskName = intent.getStringExtra(MainActivity.TASK_NAME);
-        String taskDesc = intent.getStringExtra(MainActivity.TASK_DESCRIPTION);
-        taskID = intent.getIntExtra(MainActivity.TASK_ID, -1);
 
         EditText editText_taskName = (EditText) findViewById(R.id.task_name);
         EditText editText_taskDesc = (EditText) findViewById(R.id.task_description);
 
-        editText_taskName.setText(taskName);
-        editText_taskDesc.setText(taskDesc);
+        String taskName = "Name";
+        String taskDesc = "Description";
+        taskID = intent.getLongExtra(MainActivity.TASK_ID, -1);
+        //Task already exist in database
+        if(taskID != -1)
+        {
+            Cursor curTask = MainActivity.myTaskDatabase.getTask(taskID);
+            taskName = curTask.getString(curTask.getColumnIndexOrThrow(CustomDBHelper.TASKS_COL_NAME));
+            taskDesc = curTask.getString(curTask.getColumnIndexOrThrow(CustomDBHelper.TASKS_COL_DESC));
+            editText_taskName.setText(taskName);
+            editText_taskDesc.setText(taskDesc);
 
+        }
 
     }
 
-    public void addTask(View view) {
+    public void saveTask(View view) {
         Intent intent = new Intent(this, MainActivity.class);
         EditText editText_taskName = (EditText) findViewById(R.id.task_name);
         EditText editText_taskDesc = (EditText) findViewById(R.id.task_description);
@@ -61,9 +67,11 @@ public class AddTaskMenu extends AppCompatActivity {
 
     public void deleteTask(View view) {
         Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra(TASK_ID_MENU, taskID);
+
         setResult(RESULT_DELETE, intent);
         finish();
-    }
+        }
 
     }
 

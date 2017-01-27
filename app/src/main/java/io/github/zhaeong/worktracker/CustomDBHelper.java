@@ -63,8 +63,32 @@ public class CustomDBHelper extends SQLiteOpenHelper {
         ContentValues contentValues = new ContentValues();
         contentValues.put(TASKS_COL_NAME, taskName);
         contentValues.put(TASKS_COL_DESC, taskDesc);
-        db.update(TASKS_TABLE_NAME, contentValues, "TaskId  = ? ", new String[] { Long.toString(task_id) } );
+        db.update(TASKS_TABLE_NAME, contentValues, "_id  = ? ", new String[] { Long.toString(task_id) } );
         return true;
+    }
+
+    public Cursor getTask(Long task_id)
+    {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String sqlQuery = "select * from " + TASKS_TABLE_NAME + " where _id = " + task_id.toString();
+        Cursor result = db.rawQuery( sqlQuery, null );
+        if(result.getCount() > 0) {
+            result.moveToFirst();
+        }
+        return result;
+    }
+
+    public Integer deleteTask (Long task_id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.delete(TASKS_TABLE_NAME,
+                "_id = ? ",
+                new String[] { Long.toString(task_id) });
+    }
+
+    public Cursor getAlltasks()
+    {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery( "select * from " + TASKS_TABLE_NAME, null );
     }
 /*
     public ArrayList<TaskObject> getAlltasks()
@@ -95,9 +119,5 @@ public class CustomDBHelper extends SQLiteOpenHelper {
         return TOlist;
     }
 */
-    public Cursor getAlltasks()
-    {
-        SQLiteDatabase db = this.getReadableDatabase();
-        return db.rawQuery( "select * from " + TASKS_TABLE_NAME, null );
-    }
+
 }

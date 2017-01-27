@@ -2,5 +2,10 @@
     <string name="app_name">WorkTracker</string>
 
     <string name="top_text">Text at top</string>
-    <string name="addnewtask">Add New Task</string>
+    <string name="AddNewTask">Add New Task</string>
+
+    <string name="Description">Description</string>
+    <string name="SaveTask">Save Task</string>
+    <string name="DeleteTask">Delete Task</string>
+    <string name="Name">Name</string>
 </resources>
