@@ -1,8 +1,14 @@
 package io.github.zhaeong.worktracker;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -18,6 +24,7 @@ import static io.github.zhaeong.worktracker.AddTaskMenu.RESULT_EDIT;
 
 public class MainActivity extends AppCompatActivity {
 
+
     private ListView mListView;
     public final static String TASK_NAME = "com.example.mainactivity.TASKNAME";
     public final static String TASK_DESCRIPTION = "com.example.mainactivity.TASKDESC";
@@ -27,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private ListView mDrawerList;
     private ArrayAdapter<String> mAdapter;
     private ArrayList<String> drawerItemsArray = new ArrayList<String>();
+    private DrawerLayout mDrawerLayout;
 
     public final static String AddNew = "Add New Task";
 
@@ -39,15 +47,43 @@ public class MainActivity extends AppCompatActivity {
         populateList();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.action_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        //If click on icon
+        if(item.getItemId() == R.id.action_help)
+        {
+            //If open, then close
+            if(mDrawerLayout.isDrawerOpen(mDrawerList))
+            {
+                mDrawerLayout.closeDrawer(mDrawerList);
+            }
+            else
+            {
+                mDrawerLayout.openDrawer(mDrawerList);
+            }
+        }
+        return true;
+    }
+
     protected void initiateDatabase()
     {
         myTaskDatabase = new CustomDBHelper(this);
     }
 
+
     protected void addDrawerItems()
     {
+        mDrawerLayout = (DrawerLayout)findViewById(R.id.activity_main);
         drawerItemsArray.add(AddNew);
         mDrawerList = (ListView)findViewById(R.id.right_drawer);
+
         mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, drawerItemsArray);
         mDrawerList.setAdapter(mAdapter);
 
@@ -66,26 +102,19 @@ public class MainActivity extends AppCompatActivity {
     protected void populateList()
     {
         final TaskAdapter adapter =
-                new TaskAdapter(this, myTaskDatabase.getAlltasks());
+                new TaskAdapter(this, myTaskDatabase.getAllTasks());
         mListView = (ListView) findViewById(R.id.task_list);
         mListView.setAdapter(adapter);
-
-
 
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
                 Intent intent = new Intent(MainActivity.this, AddTaskMenu.class);
-
                 intent.putExtra(TASK_ID, id);
-
 
                 startActivityForResult(intent, 1);
                 adapter.notifyDataSetChanged();
-                //Toast.makeText(getApplicationContext(),
-                //        "position: " + position + " id:" + id + " name: " + clickedTaskObj.Name, Toast.LENGTH_LONG)
-                //        .show();
             }
         });
     }

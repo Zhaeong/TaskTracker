@@ -85,7 +85,7 @@ public class CustomDBHelper extends SQLiteOpenHelper {
                 new String[] { Long.toString(task_id) });
     }
 
-    public Cursor getAlltasks()
+    public Cursor getAllTasks()
     {
         SQLiteDatabase db = this.getReadableDatabase();
         return db.rawQuery( "select * from " + TASKS_TABLE_NAME, null );

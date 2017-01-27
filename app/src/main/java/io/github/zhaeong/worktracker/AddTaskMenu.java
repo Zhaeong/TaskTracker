@@ -39,7 +39,6 @@ public class AddTaskMenu extends AppCompatActivity {
             taskDesc = curTask.getString(curTask.getColumnIndexOrThrow(CustomDBHelper.TASKS_COL_DESC));
             editText_taskName.setText(taskName);
             editText_taskDesc.setText(taskDesc);
-
         }
 
     }
