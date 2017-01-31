@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayAdapter<String> mAdapter;
     private ArrayList<String> drawerItemsArray = new ArrayList<String>();
     private DrawerLayout mDrawerLayout;
+    private ActionBarDrawerToggle mDrawerToggle;
 
     public final static String AddNew = "Add New Task";
 
@@ -43,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initiateDatabase();
-        addDrawerItems();
+        SetUpDrawer();
         populateList();
     }
 
@@ -56,18 +57,14 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
+
+        if (mDrawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
         //If click on icon
         if(item.getItemId() == R.id.action_help)
         {
-            //If open, then close
-            if(mDrawerLayout.isDrawerOpen(mDrawerList))
-            {
-                mDrawerLayout.closeDrawer(mDrawerList);
-            }
-            else
-            {
-                mDrawerLayout.openDrawer(mDrawerList);
-            }
+            //do something when click on help
         }
         return true;
     }
@@ -78,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    protected void addDrawerItems()
+    protected void SetUpDrawer()
     {
         mDrawerLayout = (DrawerLayout)findViewById(R.id.activity_main);
         drawerItemsArray.add(AddNew);
@@ -86,6 +83,25 @@ public class MainActivity extends AppCompatActivity {
 
         mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, drawerItemsArray);
         mDrawerList.setAdapter(mAdapter);
+
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
+                R.string.drawer_open, R.string.drawer_close) {
+
+            /** Called when a drawer has settled in a completely open state. */
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+            }
+
+            /** Called when a drawer has settled in a completely closed state. */
+            public void onDrawerClosed(View view) {
+                super.onDrawerClosed(view);
+                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+            }
+
+        };
+        mDrawerLayout.addDrawerListener(mDrawerToggle);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -97,6 +113,19 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, drawerItemsArray.get(position), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        // If the nav drawer is open, hide action items related to the content view
+        boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
+        menu.findItem(R.id.action_help).setVisible(!drawerOpen);
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        mDrawerToggle.syncState();
     }
 
     protected void populateList()
