@@ -1,6 +1,5 @@
 package io.github.zhaeong.worktracker;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -12,7 +11,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -51,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.action_menu, menu);
+        inflater.inflate(R.menu.main_sidemenu, menu);
         return true;
     }
 
@@ -174,7 +172,9 @@ public class MainActivity extends AppCompatActivity {
 
             if (resultCode == RESULT_CANCELED) {
                 // do something if there is no result
+
             }
+            mDrawerLayout.closeDrawer(mDrawerList);
         }
     }
 }
