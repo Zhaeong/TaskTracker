@@ -54,7 +54,6 @@ public class CustomDBHelper extends SQLiteOpenHelper {
         contentValues.put(TASKS_COL_NAME, taskName);
         contentValues.put(TASKS_COL_DESC, taskDesc);
         long pk = db.insert(TASKS_TABLE_NAME, null, contentValues);
-
         return true;
     }
 
@@ -88,6 +87,7 @@ public class CustomDBHelper extends SQLiteOpenHelper {
     public Cursor getAllTasks()
     {
         SQLiteDatabase db = this.getReadableDatabase();
+
         return db.rawQuery( "select * from " + TASKS_TABLE_NAME, null );
     }
 /*

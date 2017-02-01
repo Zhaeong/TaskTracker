@@ -101,7 +101,10 @@ public class MainActivity extends AppCompatActivity {
 
         };
         mDrawerLayout.addDrawerListener(mDrawerToggle);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        if(getSupportActionBar() != null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -158,29 +161,14 @@ public class MainActivity extends AppCompatActivity {
 
         if (requestCode == 1) {
             if(resultCode == RESULT_ADD){
-                String taskName = data.getStringExtra(AddTaskMenu.TASK_NAME_MENU);
-                String taskDesc = data.getStringExtra(AddTaskMenu.TASK_DESCRIPTION_MENU);
-
-                myTaskDatabase.addTask(taskName, taskDesc);
                 populateList();
             }
             if(resultCode == RESULT_EDIT)
             {
-
-                long taskPosit = data.getLongExtra(AddTaskMenu.TASK_ID_MENU, -1);
-                if(taskPosit != -1)
-                {
-                    String taskName = data.getStringExtra(AddTaskMenu.TASK_NAME_MENU);
-                    String taskDesc = data.getStringExtra(AddTaskMenu.TASK_DESCRIPTION_MENU);
-
-                    myTaskDatabase.updateTask(taskPosit, taskName, taskDesc);
-                    populateList();
-                }
+                populateList();
             }
             if(resultCode == RESULT_DELETE)
             {
-                long taskPosit = data.getLongExtra(AddTaskMenu.TASK_ID_MENU, -1);
-                myTaskDatabase.deleteTask(taskPosit);
                 populateList();
             }
 

@@ -50,24 +50,22 @@ public class AddTaskMenu extends AppCompatActivity {
         String taskName = editText_taskName.getText().toString();
         String taskDesc = editText_taskDesc.getText().toString();
 
-        intent.putExtra(TASK_NAME_MENU, taskName);
-        intent.putExtra(TASK_DESCRIPTION_MENU, taskDesc);
-        intent.putExtra(TASK_ID_MENU, taskID);
         //Not an existing task, so create a new task
         if(taskID == -1) {
+            MainActivity.myTaskDatabase.addTask(taskName, taskDesc);
             setResult(RESULT_ADD, intent);
-        }
+            }
         else
         {
+            MainActivity.myTaskDatabase.updateTask(taskID, taskName, taskDesc);
             setResult(RESULT_EDIT, intent);
-        }
+            }
         finish();
         }
 
     public void deleteTask(View view) {
         Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra(TASK_ID_MENU, taskID);
-
+        MainActivity.myTaskDatabase.deleteTask(taskID);
         setResult(RESULT_DELETE, intent);
         finish();
         }
