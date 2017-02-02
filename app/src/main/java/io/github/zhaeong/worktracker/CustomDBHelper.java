@@ -86,6 +86,18 @@ public class CustomDBHelper extends SQLiteOpenHelper {
         return result;
     }
 
+    public Cursor getActiveTask()
+    {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String sqlQuery = "select * from " + TASKS_TABLE_NAME + " where isActive = " + 1;
+        Cursor result = db.rawQuery( sqlQuery, null );
+        if(result.getCount() > 0) {
+            result.moveToFirst();
+        }
+        return result;
+
+    }
+
     public Integer deleteTask (Long task_id) {
         SQLiteDatabase db = this.getWritableDatabase();
         return db.delete(TASKS_TABLE_NAME,

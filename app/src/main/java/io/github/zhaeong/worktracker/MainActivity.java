@@ -1,6 +1,7 @@
 package io.github.zhaeong.worktracker;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -12,7 +13,10 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -43,7 +47,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         initiateDatabase();
         SetUpDrawer();
+        RefreshView();
+
+
+    }
+
+    public void RefreshView()
+    {
         populateList();
+        setCurActiveTask();
     }
 
     @Override
@@ -65,6 +77,23 @@ public class MainActivity extends AppCompatActivity {
             //do something when click on help
         }
         return true;
+    }
+
+    protected void setCurActiveTask()
+    {
+        TextView curActiveTask = (TextView)findViewById(R.id.activeTaskDisplay);
+        Cursor cActiveTask = myTaskDatabase.getActiveTask();
+        if(cActiveTask.getCount() == 1)
+        {
+            String taskName = cActiveTask.getString(cActiveTask.getColumnIndexOrThrow(CustomDBHelper.TASKS_COL_NAME));
+            curActiveTask.setText(taskName);
+        }
+        else
+        {
+            curActiveTask.setText("No Active Task Currently");
+        }
+
+
     }
 
     protected void initiateDatabase()
@@ -159,21 +188,23 @@ public class MainActivity extends AppCompatActivity {
 
         if (requestCode == 1) {
             if(resultCode == RESULT_ADD){
-                populateList();
+
             }
             if(resultCode == RESULT_EDIT)
             {
-                populateList();
+
             }
             if(resultCode == RESULT_DELETE)
             {
-                populateList();
+
             }
 
             if (resultCode == RESULT_CANCELED) {
                 // do something if there is no result
 
             }
+
+            RefreshView();
             mDrawerLayout.closeDrawer(mDrawerList);
         }
     }
