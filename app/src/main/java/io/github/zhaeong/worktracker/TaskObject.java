@@ -9,13 +9,13 @@ public class TaskObject {
     //public int TaskId;
     public String Name;
     public String Description;
-    public boolean isActive;
+    public int isActive;
 
     public TaskObject(String name, String description)
     {
         //this.TaskId = taskid;
         this.Name = name;
         this.Description = description;
-        this.isActive = false;
+        this.isActive = 0;
     }
 }

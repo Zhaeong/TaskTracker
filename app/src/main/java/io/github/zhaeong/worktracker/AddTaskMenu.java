@@ -30,8 +30,6 @@ public class AddTaskMenu extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_task_menu);
 
-
-
         Intent intent = getIntent();
 
         EditText editText_taskName = (EditText) findViewById(R.id.task_name);
@@ -39,6 +37,7 @@ public class AddTaskMenu extends AppCompatActivity {
 
         String taskName = "Name";
         String taskDesc = "Description";
+        int isActive = 0;
         taskID = intent.getLongExtra(MainActivity.TASK_ID, -1);
         setUpToggleButton();
         //Task already exist in database
@@ -47,8 +46,10 @@ public class AddTaskMenu extends AppCompatActivity {
             Cursor curTask = MainActivity.myTaskDatabase.getTask(taskID);
             taskName = curTask.getString(curTask.getColumnIndexOrThrow(CustomDBHelper.TASKS_COL_NAME));
             taskDesc = curTask.getString(curTask.getColumnIndexOrThrow(CustomDBHelper.TASKS_COL_DESC));
+            isActive = curTask.getInt(curTask.getColumnIndexOrThrow(CustomDBHelper.TASK_IS_ACTIVE));
             editText_taskName.setText(taskName);
             editText_taskDesc.setText(taskDesc);
+            mTaskActivationToggle.setChecked(isActive == 1);
         }
 
     }
