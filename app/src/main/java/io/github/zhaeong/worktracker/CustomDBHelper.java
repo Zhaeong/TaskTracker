@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -22,16 +23,20 @@ public class CustomDBHelper extends SQLiteOpenHelper {
     public static final String TASKS_COL_ID = "_id";
     public static final String TASKS_COL_NAME = "TaskName";
     public static final String TASKS_COL_DESC = "TaskDesc";
+    public static final String TASK_IS_ACTIVE = "isActive";
 
 
     public static final String TABLE_CREATE_STATEMENT =
             "CREATE TABLE " +
             TASKS_TABLE_NAME +
-            "( " + TASKS_COL_ID + " integer PRIMARY KEY, " +
+            "( " + TASKS_COL_ID + " INTEGER PRIMARY KEY, " +
             TASKS_COL_NAME +
             " TEXT, " +
             TASKS_COL_DESC +
-            " TEXT )";
+            " TEXT, " +
+            TASK_IS_ACTIVE +
+            " INTEGER DEFAULT 0 "+
+            " )";
 
     public CustomDBHelper(Context context) {
         super(context, DATABASE_NAME , null, DATABASE_VERSION);
@@ -40,11 +45,13 @@ public class CustomDBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(TABLE_CREATE_STATEMENT);
+        Log.i("DatabaseHelper", "executed onCreate");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS" + TASKS_TABLE_NAME);
+        Log.i("DatabaseHelper", "executed onUpgrade");
         onCreate(db);
     }
 
@@ -54,6 +61,7 @@ public class CustomDBHelper extends SQLiteOpenHelper {
         contentValues.put(TASKS_COL_NAME, taskName);
         contentValues.put(TASKS_COL_DESC, taskDesc);
         long pk = db.insert(TASKS_TABLE_NAME, null, contentValues);
+        Log.i("DatabaseHelper", "executed addTask, TaskID:" + pk + "TaskName:" + taskName);
         return true;
     }
 
@@ -63,6 +71,7 @@ public class CustomDBHelper extends SQLiteOpenHelper {
         contentValues.put(TASKS_COL_NAME, taskName);
         contentValues.put(TASKS_COL_DESC, taskDesc);
         db.update(TASKS_TABLE_NAME, contentValues, "_id  = ? ", new String[] { Long.toString(task_id) } );
+        Log.i("DatabaseHelper", "executed updateTask, TaskID: " + task_id + " TaskName: " + taskName);
         return true;
     }
 
@@ -90,6 +99,18 @@ public class CustomDBHelper extends SQLiteOpenHelper {
 
         return db.rawQuery( "select * from " + TASKS_TABLE_NAME, null );
     }
+
+    public boolean TaskActivation(Long task_id, int isActive)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(TASK_IS_ACTIVE, isActive);
+        db.update(TASKS_TABLE_NAME, contentValues, "_id  = ? ", new String[] { Long.toString(task_id) } );
+        Log.i("DatabaseHelper", "executed TaskActivation, TaskID: " + task_id + ", isActive:" + isActive);
+        return true;
+
+    }
+
 /*
     public ArrayList<TaskObject> getAlltasks()
     {
