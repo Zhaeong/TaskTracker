@@ -16,9 +16,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
+
+import io.github.zhaeong.worktracker.TaskConstructs.CustomDBHelper;
+import io.github.zhaeong.worktracker.TaskConstructs.TaskAdapter;
 
 import static io.github.zhaeong.worktracker.AddTaskMenu.RESULT_ADD;
 import static io.github.zhaeong.worktracker.AddTaskMenu.RESULT_DELETE;
@@ -31,15 +32,19 @@ public class MainActivity extends AppCompatActivity {
     public final static String TASK_NAME = "com.example.mainactivity.TASKNAME";
     public final static String TASK_DESCRIPTION = "com.example.mainactivity.TASKDESC";
     public final static String TASK_ID = "com.example.mainactivity.TASKID";
+
+    //Database Variable
     public static CustomDBHelper myTaskDatabase;
 
+    //Drawer Variables
     private ListView mDrawerList;
-    private ArrayAdapter<String> mAdapter;
+    private ArrayAdapter<String> mDrawerAdapter;
     private ArrayList<String> drawerItemsArray = new ArrayList<String>();
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
 
     public final static String AddNew = "Add New Task";
+    public final static String TaskInfoScreen = "Task Info Screen";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,8 +53,6 @@ public class MainActivity extends AppCompatActivity {
         initiateDatabase();
         SetUpDrawer();
         RefreshView();
-
-
     }
 
     public void RefreshView()
@@ -58,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
         setCurActiveTask();
     }
 
+    //Set up to menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -79,6 +83,12 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        mDrawerToggle.syncState();
+    }
+
     protected void setCurActiveTask()
     {
         TextView curActiveTask = (TextView)findViewById(R.id.activeTaskDisplay);
@@ -92,8 +102,6 @@ public class MainActivity extends AppCompatActivity {
         {
             curActiveTask.setText("No Active Task Currently");
         }
-
-
     }
 
     protected void initiateDatabase()
@@ -106,10 +114,11 @@ public class MainActivity extends AppCompatActivity {
     {
         mDrawerLayout = (DrawerLayout)findViewById(R.id.activity_main);
         drawerItemsArray.add(AddNew);
+        drawerItemsArray.add(TaskInfoScreen);
         mDrawerList = (ListView)findViewById(R.id.right_drawer);
 
-        mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, drawerItemsArray);
-        mDrawerList.setAdapter(mAdapter);
+        mDrawerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, drawerItemsArray);
+        mDrawerList.setAdapter(mDrawerAdapter);
 
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
                 R.string.drawer_open, R.string.drawer_close) {
@@ -138,7 +147,11 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if(drawerItemsArray.get(position).equals(AddNew))
                 {
-                    addNewtask(view);
+                    addNewTask(view);
+                }
+                else if(drawerItemsArray.get(position).equals(TaskInfoScreen))
+                {
+                    openTaskInfoScreen();
                 }
                 Toast.makeText(MainActivity.this, drawerItemsArray.get(position), Toast.LENGTH_SHORT).show();
             }
@@ -150,12 +163,6 @@ public class MainActivity extends AppCompatActivity {
         boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
         menu.findItem(R.id.action_help).setVisible(!drawerOpen);
         return super.onPrepareOptionsMenu(menu);
-    }
-
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        mDrawerToggle.syncState();
     }
 
     protected void populateList()
@@ -179,9 +186,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //Called when the user clicks the AddTask button
-    public void addNewtask(View view) {
+    public void addNewTask(View view) {
         Intent intent = new Intent(this, AddTaskMenu.class);
         startActivityForResult(intent, 1);
+    }
+
+    public void openTaskInfoScreen()
+    {
+        Intent intent = new Intent(this, TaskInfo.class);
+        startActivity(intent);
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

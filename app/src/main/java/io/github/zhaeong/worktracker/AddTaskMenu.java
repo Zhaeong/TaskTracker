@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -14,7 +13,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
-import static android.R.attr.duration;
+import io.github.zhaeong.worktracker.TaskConstructs.CustomDBHelper;
 
 public class AddTaskMenu extends AppCompatActivity {
     public final static int RESULT_ADD = 10001;
