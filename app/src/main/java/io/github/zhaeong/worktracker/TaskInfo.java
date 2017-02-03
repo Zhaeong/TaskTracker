@@ -19,7 +19,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import io.github.zhaeong.worktracker.TaskConstructs.TaskAdapter;
+import io.github.zhaeong.worktracker.TaskConstructs.TaskInfoAdapter;
 
 public class TaskInfo extends AppCompatActivity {
 
@@ -35,6 +35,7 @@ public class TaskInfo extends AppCompatActivity {
     private ActionBarDrawerToggle mDrawerToggle;
 
     public final static String MainTaskScreen = "Main Task Screen";
+    public final static String TASK_INFO_ID = "com.example.taskinfo.TASKID";
 
 
     @Override
@@ -126,8 +127,8 @@ public class TaskInfo extends AppCompatActivity {
 
     protected void populateList()
     {
-        final TaskAdapter adapter =
-                new TaskAdapter(this, MainActivity.myTaskDatabase.getAllTasks());
+        final TaskInfoAdapter adapter =
+                new TaskInfoAdapter(this, MainActivity.myTaskDatabase.getAllTasks());
         mListView = (ListView) findViewById(R.id.task_list_info);
         mListView.setAdapter(adapter);
 
@@ -135,8 +136,8 @@ public class TaskInfo extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                Intent intent = new Intent(TaskInfo.this, AddTaskMenu.class);
-                //intent.putExtra(TASK_ID, id);
+                Intent intent = new Intent(TaskInfo.this, TaskInfoDesc.class);
+                intent.putExtra(TASK_INFO_ID, id);
 
                 startActivityForResult(intent, 1);
                 adapter.notifyDataSetChanged();

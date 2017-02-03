@@ -34,9 +34,9 @@ public class AddTaskMenu extends AppCompatActivity {
         EditText editText_taskName = (EditText) findViewById(R.id.task_name);
         EditText editText_taskDesc = (EditText) findViewById(R.id.task_description);
 
-        String taskName = "Name";
-        String taskDesc = "Description";
-        int isActive = 0;
+        String taskName;
+        String taskDesc;
+        int isActive;
         taskID = intent.getLongExtra(MainActivity.TASK_ID, -1);
         setUpToggleButton();
         //Task already exist in database

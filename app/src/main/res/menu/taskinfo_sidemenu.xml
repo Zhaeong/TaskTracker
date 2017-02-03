@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <item android:id="@+id/saveTask"
-        android:title="@string/SaveTask" />
-
-    <item android:id="@+id/deleteTask"
-        android:title="@string/DeleteTask" />
-
     <!--
-    <item android:title="Help" myapp:showAsAction="always" android:icon="@drawable/ic_action_help" android:id="@+id/action_help"/>
-    -->
+        <item android:id="@+id/saveTask"
+            android:title="@string/SaveTask" />
+
+        <item android:id="@+id/deleteTask"
+            android:title="@string/DeleteTask" />
+
+
+        <item android:title="Help" myapp:showAsAction="always" android:icon="@drawable/ic_action_help" android:id="@+id/action_help"/>
+        -->
 
 </menu>

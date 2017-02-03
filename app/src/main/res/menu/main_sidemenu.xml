@@ -4,7 +4,7 @@
     <!--
     <item android:id="@+id/bookmark_menu"
         android:title="@string/app_name" />
-        -->
-    <item android:title="Help" myapp:showAsAction="always" android:icon="@drawable/ic_action_help" android:id="@+id/action_help"/>
 
+    <item android:title="Help" myapp:showAsAction="always" android:icon="@drawable/ic_action_help" android:id="@+id/action_help"/>
+-->
 </menu>

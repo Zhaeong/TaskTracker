@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by owen_ on 2017-01-24.
@@ -23,20 +24,31 @@ public class CustomDBHelper extends SQLiteOpenHelper {
     public static final String TASKS_COL_ID = "_id";
     public static final String TASKS_COL_NAME = "TaskName";
     public static final String TASKS_COL_DESC = "TaskDesc";
+    public static final String TASKS_CREATION_DATETIME = "TaskCreDateTime";
+    public static final String TASKS_START_DATETIME = "TaskStartDateTime";
+    public static final String TASKS_END_DATETIME = "TaskEndDateTime";
+    public static final String TASKS_ELAPSED = "TaskElapsed";
     public static final String TASK_IS_ACTIVE = "isActive";
 
-
     public static final String TABLE_CREATE_STATEMENT =
-            "CREATE TABLE " +
-            TASKS_TABLE_NAME +
-            "( " + TASKS_COL_ID + " INTEGER PRIMARY KEY, " +
-            TASKS_COL_NAME +
-            " TEXT, " +
-            TASKS_COL_DESC +
-            " TEXT, " +
-            TASK_IS_ACTIVE +
-            " INTEGER DEFAULT 0 "+
-            " )";
+        "CREATE TABLE " +
+        TASKS_TABLE_NAME +
+        "( " + TASKS_COL_ID + " INTEGER PRIMARY KEY, " +
+        TASKS_COL_NAME +
+        " TEXT, " +
+        TASKS_COL_DESC +
+        " TEXT, " +
+        TASKS_CREATION_DATETIME +
+        " INTEGER, "+
+        TASKS_START_DATETIME +
+        " INTEGER, "+
+        TASKS_END_DATETIME +
+        " INTEGER, "+
+        TASKS_ELAPSED +
+        " INTEGER, "+
+        TASK_IS_ACTIVE +
+        " INTEGER DEFAULT 0 "+
+        " )";
 
     public CustomDBHelper(Context context) {
         super(context, DATABASE_NAME , null, DATABASE_VERSION);
@@ -58,8 +70,13 @@ public class CustomDBHelper extends SQLiteOpenHelper {
     public boolean addTask (String taskName, String taskDesc) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
+
+        Date curDate = new Date();
+        Long curTime = curDate.getTime();
+
         contentValues.put(TASKS_COL_NAME, taskName);
         contentValues.put(TASKS_COL_DESC, taskDesc);
+        contentValues.put(TASKS_CREATION_DATETIME, curTime);
         long pk = db.insert(TASKS_TABLE_NAME, null, contentValues);
         Log.i("DatabaseHelper", "executed addTask, TaskID:" + pk + "TaskName:" + taskName);
         return true;
@@ -115,12 +132,52 @@ public class CustomDBHelper extends SQLiteOpenHelper {
     public boolean TaskActivation(Long task_id, int isActive)
     {
         SQLiteDatabase db = this.getWritableDatabase();
+
+        Date curDate = new Date();
+        Long curTime = curDate.getTime();
+
         ContentValues contentValues = new ContentValues();
         contentValues.put(TASK_IS_ACTIVE, isActive);
+
+
+        if(isActive == 1) //add the start time
+        {
+            contentValues.put(TASKS_START_DATETIME, curTime);
+        }
+        else if (isActive == 0) //add the end time and increment time elapsed accordingly
+        {
+
+            long lStartTime = Long.parseLong(getTaskInfo(task_id, TASKS_START_DATETIME));
+            long alreadyElapsedTime = 0;
+            if(getTaskInfo(task_id, TASKS_ELAPSED) != null)
+            {
+                alreadyElapsedTime = Long.parseLong(getTaskInfo(task_id, TASKS_ELAPSED));
+            }
+
+            long elapsedTime = (curTime - lStartTime) + alreadyElapsedTime;
+            contentValues.put(TASKS_END_DATETIME, curTime);
+            contentValues.put(TASKS_ELAPSED, elapsedTime);
+            Log.i("DatabaseHelper", "starttime: " +lStartTime + "endtime:" + curTime + "elapsedtime: " + elapsedTime);
+        }
+
         db.update(TASKS_TABLE_NAME, contentValues, "_id  = ? ", new String[] { Long.toString(task_id) } );
         Log.i("DatabaseHelper", "executed TaskActivation, TaskID: " + task_id + ", isActive:" + isActive);
         return true;
 
+    }
+
+    public String getTaskInfo(Long task_id, String tableColumn)
+    {
+        String resultInfo = "";
+        SQLiteDatabase db = this.getReadableDatabase();
+        String sqlQuery = "select " + tableColumn + " from " + TASKS_TABLE_NAME + " where _id = " + task_id;
+        Cursor curResult = db.rawQuery( sqlQuery, null );
+        if(curResult.getCount() > 0) {
+            curResult.moveToFirst();
+            resultInfo = curResult.getString(curResult.getColumnIndex(tableColumn));
+        }
+        curResult.close();
+        return resultInfo;
     }
 
 /*

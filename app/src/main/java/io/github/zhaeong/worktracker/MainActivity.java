@@ -75,11 +75,12 @@ public class MainActivity extends AppCompatActivity {
         if (mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
-        //If click on icon
+        /*If click on icon
         if(item.getItemId() == R.id.action_help)
         {
             //do something when click on help
         }
+        */
         return true;
     }
 
@@ -161,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onPrepareOptionsMenu(Menu menu) {
         // If the nav drawer is open, hide action items related to the content view
         boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
-        menu.findItem(R.id.action_help).setVisible(!drawerOpen);
+        //menu.findItem(R.id.action_help).setVisible(!drawerOpen);
         return super.onPrepareOptionsMenu(menu);
     }
 

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_task_info_desc"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="io.github.zhaeong.worktracker.TaskInfoDesc">
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/taskName"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/namelabel"
+        android:layout_toEndOf="@+id/namelabel"
+        android:layout_marginTop="17dp"
+        android:paddingLeft="10dp" />
+
+    <TextView
+        android:text="Name:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/namelabel"
+        android:layout_alignBaseline="@+id/taskName"
+        android:layout_alignBottom="@+id/taskName"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:text="Creation Date:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/taskName"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/creationdatelabel" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/creationdatelabel"
+        android:layout_toRightOf="@+id/creationdatelabel"
+        android:layout_toEndOf="@+id/creationdatelabel"
+        android:id="@+id/taskDate"
+        android:paddingLeft="10dp" />
+
+    <TextView
+        android:text="Start Date:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/creationdatelabel"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/startdatelabel" />
+
+    <TextView
+        android:text="End Date:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/startdatelabel"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/enddatelabel" />
+
+    <TextView
+        android:text="Task Time Elapsed:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/enddatelabel"
+        android:id="@+id/tasktimelabel" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/creationdatelabel"
+        android:layout_toRightOf="@+id/startdatelabel"
+        android:layout_toEndOf="@+id/startdatelabel"
+        android:id="@+id/startDate"
+        android:paddingLeft="10dp" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/startDate"
+        android:layout_toRightOf="@+id/startdatelabel"
+        android:layout_toEndOf="@+id/startdatelabel"
+        android:id="@+id/endDate"
+        android:paddingLeft="10dp" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/timeElapsed"
+        android:paddingLeft="10dp"
+        android:layout_below="@+id/endDate"
+        android:layout_toRightOf="@+id/tasktimelabel"
+        android:layout_toEndOf="@+id/tasktimelabel" />
+</RelativeLayout>
