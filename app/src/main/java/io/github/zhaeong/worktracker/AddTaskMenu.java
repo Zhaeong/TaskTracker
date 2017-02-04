@@ -29,6 +29,8 @@ public class AddTaskMenu extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_task_menu);
 
+        mTaskActivationToggle =  (ToggleButton)findViewById(R.id.taskActivationButton);
+
         Intent intent = getIntent();
 
         EditText editText_taskName = (EditText) findViewById(R.id.task_name);
@@ -38,7 +40,7 @@ public class AddTaskMenu extends AppCompatActivity {
         String taskDesc;
         int isActive;
         taskID = intent.getLongExtra(MainActivity.TASK_ID, -1);
-        setUpToggleButton();
+
         //Task already exist in database
         if(taskID != -1)
         {
@@ -50,6 +52,7 @@ public class AddTaskMenu extends AppCompatActivity {
             editText_taskDesc.setText(taskDesc);
             mTaskActivationToggle.setChecked(isActive == 1);
         }
+        setUpToggleButton();
 
     }
 
@@ -78,7 +81,6 @@ public class AddTaskMenu extends AppCompatActivity {
 
     public void setUpToggleButton()
     {
-        mTaskActivationToggle =  (ToggleButton)findViewById(R.id.taskActivationButton);
         mTaskActivationToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
