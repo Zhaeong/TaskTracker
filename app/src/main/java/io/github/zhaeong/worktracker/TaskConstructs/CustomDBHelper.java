@@ -142,6 +142,7 @@ public class CustomDBHelper extends SQLiteOpenHelper {
 
         if(isActive == 1) //add the start time
         {
+            deactivateAllOtherTasks(task_id);
             contentValues.put(TASKS_START_DATETIME, curTime);
         }
         else if (isActive == 0) //add the end time and increment time elapsed accordingly
@@ -178,6 +179,14 @@ public class CustomDBHelper extends SQLiteOpenHelper {
         }
         curResult.close();
         return resultInfo;
+    }
+
+    public void deactivateAllOtherTasks(Long task_id)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(TASK_IS_ACTIVE, 0);
+        db.update(TASKS_TABLE_NAME, contentValues, "_id  != ? ", new String[] { Long.toString(task_id) } );
     }
 
 /*
