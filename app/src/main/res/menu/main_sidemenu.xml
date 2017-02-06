@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <menu xmlns:myapp="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android">
-    <!--
-    <item android:id="@+id/bookmark_menu"
-        android:title="@string/app_name" />
 
+    <item android:id="@+id/wakeup"
+        android:title="@string/wakeup" />
+
+    <item android:id="@+id/sleep"
+        android:title="@string/sleep" />
+
+<!--
     <item android:title="Help" myapp:showAsAction="always" android:icon="@drawable/ic_action_help" android:id="@+id/action_help"/>
 -->
 </menu>

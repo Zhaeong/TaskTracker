@@ -67,7 +67,7 @@ public class CustomDBHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public boolean addTask (String taskName, String taskDesc) {
+    public long addTask (String taskName, String taskDesc) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
 
@@ -79,7 +79,7 @@ public class CustomDBHelper extends SQLiteOpenHelper {
         contentValues.put(TASKS_CREATION_DATETIME, curTime);
         long pk = db.insert(TASKS_TABLE_NAME, null, contentValues);
         Log.i("DatabaseHelper", "executed addTask, TaskID:" + pk + "TaskName:" + taskName);
-        return true;
+        return pk;
     }
 
     public boolean updateTask (Long task_id, String taskName, String taskDesc) {

@@ -15,5 +15,8 @@
     <string name="deactivate">Deactivate</string>
     <string name="title_activity_task_info">TaskInfo</string>
 
+    <string name="wakeup">Wake Up</string>
+    <string name="sleep">Go to Sleep</string>
+
 
 </resources>

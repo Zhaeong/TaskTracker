@@ -2,6 +2,7 @@ package io.github.zhaeong.worktracker;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -52,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         initiateDatabase();
         SetUpDrawer();
+        SetUpFAB();
         RefreshView();
     }
 
@@ -114,7 +116,6 @@ public class MainActivity extends AppCompatActivity {
     protected void SetUpDrawer()
     {
         mDrawerLayout = (DrawerLayout)findViewById(R.id.activity_main);
-        drawerItemsArray.add(AddNew);
         drawerItemsArray.add(TaskInfoScreen);
         mDrawerList = (ListView)findViewById(R.id.right_drawer);
 
@@ -155,6 +156,17 @@ public class MainActivity extends AppCompatActivity {
                     openTaskInfoScreen();
                 }
                 Toast.makeText(MainActivity.this, drawerItemsArray.get(position), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void SetUpFAB()
+    {
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.addtaskFAB);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addNewTask(view);
             }
         });
     }

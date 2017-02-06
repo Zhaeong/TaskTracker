@@ -70,12 +70,13 @@ public class AddTaskMenu extends AppCompatActivity {
         if(item.getItemId() == R.id.saveTask)
         {
             //do something when click on help
-            saveTask(this.findViewById(R.id.activity_add_task_menu));
+            saveTask();
         }
         else if(item.getItemId() == R.id.deleteTask)
         {
-            deleteTask(this.findViewById(R.id.activity_add_task_menu));
+            deleteTask();
         }
+        finish();
         return true;
     }
 
@@ -83,56 +84,61 @@ public class AddTaskMenu extends AppCompatActivity {
     {
         mTaskActivationToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    if(taskID != -1) // Task exists already
-                    {
+                if(taskID != -1) // Task exists already
+                {
+                    if (isChecked) {
                         MainActivity.myTaskDatabase.TaskActivation(taskID, 1);
                         Toast.makeText(getApplicationContext(), "Task Activated", Toast.LENGTH_SHORT).show();
                     }
-
-                } else {
-                    if(taskID != -1) // Task exists already
+                    else
                     {
+                        {
                         MainActivity.myTaskDatabase.TaskActivation(taskID, 0);
                         Toast.makeText(getApplicationContext(), "Task Deactivated", Toast.LENGTH_SHORT).show();
+                        }
                     }
-
+                }
+                else
+                {
+                    Long savedTaskId = saveTask();
+                    MainActivity.myTaskDatabase.TaskActivation(savedTaskId, 1);
+                    finish();
                 }
             }
         });
-
     }
 
-    public void saveTask(View view) {
+    public long saveTask() {
         Intent intent = new Intent(this, MainActivity.class);
         EditText editText_taskName = (EditText) findViewById(R.id.task_name);
         EditText editText_taskDesc = (EditText) findViewById(R.id.task_description);
         String taskName = editText_taskName.getText().toString();
         String taskDesc = editText_taskDesc.getText().toString();
 
+        long TaskId;
+
         //Not an existing task, so create a new task
         if(taskID == -1) {
-            MainActivity.myTaskDatabase.addTask(taskName, taskDesc);
+            TaskId = MainActivity.myTaskDatabase.addTask(taskName, taskDesc);
             Toast message = new Toast(getApplicationContext());
             Toast.makeText(getApplicationContext(), "Task Added", Toast.LENGTH_SHORT).show();
-
             setResult(RESULT_ADD, intent);
             }
-        else
-        {
+        else{
+            TaskId = taskID;
             MainActivity.myTaskDatabase.updateTask(taskID, taskName, taskDesc);
             Toast.makeText(getApplicationContext(), "Task Saved", Toast.LENGTH_SHORT).show();
             setResult(RESULT_EDIT, intent);
             }
-        finish();
+
+        return TaskId;
         }
 
-    public void deleteTask(View view) {
+    public void deleteTask() {
         Intent intent = new Intent(this, MainActivity.class);
         MainActivity.myTaskDatabase.deleteTask(taskID);
         Toast.makeText(getApplicationContext(), "Task Deleted", Toast.LENGTH_SHORT).show();
         setResult(RESULT_DELETE, intent);
-        finish();
         }
 
     }
