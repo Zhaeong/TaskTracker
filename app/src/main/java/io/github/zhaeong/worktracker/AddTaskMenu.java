@@ -85,7 +85,7 @@ public class AddTaskMenu extends AppCompatActivity {
         mTaskActivationToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
-                MainActivity.myTaskDatabase.printAlltasks();
+                MainActivity.myTaskDatabase.printAllItemsInTable(CustomDBHelper.TASKS_TABLE_NAME);
                 if(taskID != -1) // Task exists already
                 {
                     if (isChecked) {

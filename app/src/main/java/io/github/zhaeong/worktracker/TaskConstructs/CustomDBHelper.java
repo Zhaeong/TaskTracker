@@ -30,7 +30,7 @@ public class CustomDBHelper extends SQLiteOpenHelper {
     public static final String TASKS_ELAPSED = "TaskElapsed";
     public static final String TASK_IS_ACTIVE = "isActive";
 
-    public static final String TABLE_CREATE_STATEMENT =
+    public static final String TABLE_CREATE_TASKS =
         "CREATE TABLE " +
         TASKS_TABLE_NAME +
         "( " + TASKS_COL_ID + " INTEGER PRIMARY KEY, " +
@@ -50,13 +50,33 @@ public class CustomDBHelper extends SQLiteOpenHelper {
         " INTEGER DEFAULT 0 "+
         " )";
 
+    public static final String TABLE_CREATE_DAYS =
+            "CREATE TABLE " +
+                    TASKS_TABLE_NAME +
+                    "( " + TASKS_COL_ID + " INTEGER PRIMARY KEY, " +
+                    TASKS_COL_NAME +
+                    " TEXT, " +
+                    TASKS_COL_DESC +
+                    " TEXT, " +
+                    TASKS_CREATION_DATETIME +
+                    " INTEGER, "+
+                    TASKS_START_DATETIME +
+                    " INTEGER, "+
+                    TASKS_END_DATETIME +
+                    " INTEGER, "+
+                    TASKS_ELAPSED +
+                    " INTEGER, "+
+                    TASK_IS_ACTIVE +
+                    " INTEGER DEFAULT 0 "+
+                    " )";
+
     public CustomDBHelper(Context context) {
         super(context, DATABASE_NAME , null, DATABASE_VERSION);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(TABLE_CREATE_STATEMENT);
+        db.execSQL(TABLE_CREATE_TASKS);
         Log.i("DatabaseHelper", "executed onCreate");
     }
 
@@ -206,28 +226,22 @@ public class CustomDBHelper extends SQLiteOpenHelper {
     }
 
 
-    public void printAlltasks()
+    public void printAllItemsInTable(String tableName)
     {
-        ArrayList<TaskObject> TOlist = new ArrayList<TaskObject>();
-
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res =  db.rawQuery( "select * from " + TASKS_TABLE_NAME, null );
+        Cursor res =  db.rawQuery( "select * from " + tableName, null );
         try {
             res.moveToFirst();
             String loggerMSG = "";
             while (!res.isAfterLast()) {
+                String loggerLine = "";
+                for(int i = 0; i < res.getColumnCount(); i++)
+                {
+                    loggerLine += res.getString(i);
+                    loggerLine += " ";
+                }
 
-                Long taskId = res.getLong(res.getColumnIndex(TASKS_COL_ID));
-
-                String taskName = res.getString(res.getColumnIndex(TASKS_COL_NAME));
-                String taskDesc = res.getString(res.getColumnIndex(TASKS_COL_DESC));
-                String taskCD = res.getString(res.getColumnIndex(TASKS_CREATION_DATETIME));
-                String taskSD = res.getString(res.getColumnIndex(TASKS_START_DATETIME));
-                String taskED = res.getString(res.getColumnIndex(TASKS_END_DATETIME));
-                String taskE = res.getString(res.getColumnIndex(TASKS_ELAPSED));
-                String taskA = res.getString(res.getColumnIndex(TASK_IS_ACTIVE));
-
-                String loggerLine = taskId + " " +taskName + " " +taskDesc + " " +taskCD + " " +taskSD + " " +taskED + " " +taskE + " " +taskA + "\n";
+                loggerLine += "\n";
                 loggerMSG +=loggerLine;
 
                 res.moveToNext();
