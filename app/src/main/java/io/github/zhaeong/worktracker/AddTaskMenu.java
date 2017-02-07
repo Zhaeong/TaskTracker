@@ -84,6 +84,8 @@ public class AddTaskMenu extends AppCompatActivity {
     {
         mTaskActivationToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                MainActivity.myTaskDatabase.printAlltasks();
                 if(taskID != -1) // Task exists already
                 {
                     if (isChecked) {
@@ -104,6 +106,8 @@ public class AddTaskMenu extends AppCompatActivity {
                     MainActivity.myTaskDatabase.TaskActivation(savedTaskId, 1);
                     finish();
                 }
+
+
             }
         });
     }

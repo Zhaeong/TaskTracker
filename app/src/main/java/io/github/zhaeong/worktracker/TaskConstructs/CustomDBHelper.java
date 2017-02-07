@@ -142,7 +142,7 @@ public class CustomDBHelper extends SQLiteOpenHelper {
 
         if(isActive == 1) //add the start time
         {
-            deactivateAllOtherTasks(task_id);
+            deactivateCurActiveTask();
             contentValues.put(TASKS_START_DATETIME, curTime);
         }
         else if (isActive == 0) //add the end time and increment time elapsed accordingly
@@ -177,20 +177,36 @@ public class CustomDBHelper extends SQLiteOpenHelper {
             curResult.moveToFirst();
             resultInfo = curResult.getString(curResult.getColumnIndex(tableColumn));
         }
+        else
+        {
+            Log.e("DatabaseHelper", "unable to getTaskInfo");
+        }
         curResult.close();
         return resultInfo;
     }
 
-    public void deactivateAllOtherTasks(Long task_id)
+    public void deactivateCurActiveTask() //Deactivates currently active task and sets the end time accordingly
     {
         SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(TASK_IS_ACTIVE, 0);
-        db.update(TASKS_TABLE_NAME, contentValues, "_id  != ? ", new String[] { Long.toString(task_id) } );
+        String sqlQuery = "select _id from " + TASKS_TABLE_NAME + " where isActive = 1";
+        Cursor curResult = db.rawQuery( sqlQuery, null );
+        if(curResult.getCount() == 1) {
+            curResult.moveToFirst();
+            Long taskId = curResult.getLong(curResult.getColumnIndex(TASKS_COL_ID));
+            TaskActivation(taskId, 0);
+
+        }
+        else
+        {
+            Log.e("DatabaseHelper", "More than 1 active task at a time");
+        }
+
+        curResult.close();
+
     }
 
-/*
-    public ArrayList<TaskObject> getAlltasks()
+
+    public void printAlltasks()
     {
         ArrayList<TaskObject> TOlist = new ArrayList<TaskObject>();
 
@@ -198,25 +214,31 @@ public class CustomDBHelper extends SQLiteOpenHelper {
         Cursor res =  db.rawQuery( "select * from " + TASKS_TABLE_NAME, null );
         try {
             res.moveToFirst();
-
+            String loggerMSG = "";
             while (!res.isAfterLast()) {
+
+                Long taskId = res.getLong(res.getColumnIndex(TASKS_COL_ID));
 
                 String taskName = res.getString(res.getColumnIndex(TASKS_COL_NAME));
                 String taskDesc = res.getString(res.getColumnIndex(TASKS_COL_DESC));
+                String taskCD = res.getString(res.getColumnIndex(TASKS_CREATION_DATETIME));
+                String taskSD = res.getString(res.getColumnIndex(TASKS_START_DATETIME));
+                String taskED = res.getString(res.getColumnIndex(TASKS_END_DATETIME));
+                String taskE = res.getString(res.getColumnIndex(TASKS_ELAPSED));
+                String taskA = res.getString(res.getColumnIndex(TASK_IS_ACTIVE));
 
-                TaskObject to = new TaskObject(taskName, taskDesc);
-                TOlist.add(to);
+                String loggerLine = taskId + " " +taskName + " " +taskDesc + " " +taskCD + " " +taskSD + " " +taskED + " " +taskE + " " +taskA + "\n";
+                loggerMSG +=loggerLine;
 
                 res.moveToNext();
             }
+            Log.i("DatabaseHelper", loggerMSG);
         }
         finally {
             res.close();
         }
 
-
-        return TOlist;
     }
-*/
+
 
 }
