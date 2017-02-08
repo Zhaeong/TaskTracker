@@ -7,7 +7,7 @@
         android:text="TextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/taskName"
+        android:id="@+id/dayName"
         android:textStyle="normal|bold"
         android:textSize="24sp" />
 

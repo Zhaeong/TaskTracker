@@ -44,7 +44,7 @@ public class AddTaskMenu extends AppCompatActivity {
         //Task already exist in database
         if(taskID != -1)
         {
-            Cursor curTask = MainActivity.myTaskDatabase.getTask(taskID);
+            Cursor curTask = MainActivity.myTaskDatabase.getItemInTable(taskID, CustomDBHelper.TASKS_TABLE_NAME);
             taskName = curTask.getString(curTask.getColumnIndexOrThrow(CustomDBHelper.TASKS_COL_NAME));
             taskDesc = curTask.getString(curTask.getColumnIndexOrThrow(CustomDBHelper.TASKS_COL_DESC));
             isActive = curTask.getInt(curTask.getColumnIndexOrThrow(CustomDBHelper.TASK_IS_ACTIVE));

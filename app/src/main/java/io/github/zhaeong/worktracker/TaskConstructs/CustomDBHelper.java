@@ -7,8 +7,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by owen_ on 2017-01-24.
@@ -21,6 +23,7 @@ public class CustomDBHelper extends SQLiteOpenHelper {
     public static final int DATABASE_VERSION = 1;
 
     public static final String TASKS_TABLE_NAME = "TASKS";
+
     public static final String TASKS_COL_ID = "_id";
     public static final String TASKS_COL_NAME = "TaskName";
     public static final String TASKS_COL_DESC = "TaskDesc";
@@ -50,25 +53,27 @@ public class CustomDBHelper extends SQLiteOpenHelper {
         " INTEGER DEFAULT 0 "+
         " )";
 
+    public static final String DAYS_TABLE_NAME = "DAYS";
+    public static final String DAYS_COL_ID = "_id";
+    public static final String DAYS_COL_NAME = "DayName";
+    public static final String DAYS_WAKETIME = "DaysWakeTime";
+    public static final String DAYS_SLEEPTIME = "DaysSleepTime";
+    public static final String DAYS_IS_ACTIVE = "isActive";
+
+
     public static final String TABLE_CREATE_DAYS =
             "CREATE TABLE " +
-                    TASKS_TABLE_NAME +
-                    "( " + TASKS_COL_ID + " INTEGER PRIMARY KEY, " +
-                    TASKS_COL_NAME +
-                    " TEXT, " +
-                    TASKS_COL_DESC +
-                    " TEXT, " +
-                    TASKS_CREATION_DATETIME +
-                    " INTEGER, "+
-                    TASKS_START_DATETIME +
-                    " INTEGER, "+
-                    TASKS_END_DATETIME +
-                    " INTEGER, "+
-                    TASKS_ELAPSED +
-                    " INTEGER, "+
-                    TASK_IS_ACTIVE +
-                    " INTEGER DEFAULT 0 "+
-                    " )";
+            DAYS_TABLE_NAME +
+            "( " + DAYS_COL_ID + " INTEGER PRIMARY KEY, " +
+            DAYS_COL_NAME +
+            " TEXT, " +
+            DAYS_WAKETIME +
+            " INTEGER, "+
+            DAYS_SLEEPTIME +
+            " INTEGER, "+
+            DAYS_IS_ACTIVE +
+            " INTEGER DEFAULT 0 " +
+            " )";
 
     public CustomDBHelper(Context context) {
         super(context, DATABASE_NAME , null, DATABASE_VERSION);
@@ -77,14 +82,29 @@ public class CustomDBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(TABLE_CREATE_TASKS);
+        db.execSQL(TABLE_CREATE_DAYS);
         Log.i("DatabaseHelper", "executed onCreate");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS" + TASKS_TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS" + DAYS_TABLE_NAME);
         Log.i("DatabaseHelper", "executed onUpgrade");
         onCreate(db);
+    }
+
+    //////////////////////////////////////////////////////////////////////////////////
+    //
+    //Tasks Database Functions
+    //
+    /////////////////////////////////////////////////////////////////////////////////
+
+    public Cursor getAllItemsInTable(String tableName)
+    {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        return db.rawQuery( "select * from " + tableName, null );
     }
 
     public long addTask (String taskName, String taskDesc) {
@@ -112,10 +132,10 @@ public class CustomDBHelper extends SQLiteOpenHelper {
         return true;
     }
 
-    public Cursor getTask(Long task_id)
+    public Cursor getItemInTable(Long task_id, String tableName)
     {
         SQLiteDatabase db = this.getReadableDatabase();
-        String sqlQuery = "select * from " + TASKS_TABLE_NAME + " where _id = " + task_id.toString();
+        String sqlQuery = "select * from " + tableName + " where _id = " + task_id.toString();
         Cursor result = db.rawQuery( sqlQuery, null );
         if(result.getCount() > 0) {
             result.moveToFirst();
@@ -140,13 +160,6 @@ public class CustomDBHelper extends SQLiteOpenHelper {
         return db.delete(TASKS_TABLE_NAME,
                 "_id = ? ",
                 new String[] { Long.toString(task_id) });
-    }
-
-    public Cursor getAllTasks()
-    {
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        return db.rawQuery( "select * from " + TASKS_TABLE_NAME, null );
     }
 
     public boolean TaskActivation(Long task_id, int isActive)
@@ -220,12 +233,80 @@ public class CustomDBHelper extends SQLiteOpenHelper {
         {
             Log.e("DatabaseHelper", "More than 1 active task at a time");
         }
-
         curResult.close();
+    }
+    //////////////////////////////////////////////////////////////////////////////////
+    //
+    //Days Database Functions
+    //
+    /////////////////////////////////////////////////////////////////////////////////
+
+
+
+    public long createDay()
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+
+        Date curDate = new Date();
+        Long curTime = curDate.getTime();
+        String dayName = DateFormat.getDateInstance(DateFormat.SHORT, Locale.CANADA).format(curDate);
+
+        contentValues.put(DAYS_COL_NAME, dayName);
+        contentValues.put(DAYS_WAKETIME, curTime);
+        contentValues.put(DAYS_IS_ACTIVE, 1);
+        long pk = db.insert(DAYS_TABLE_NAME, null, contentValues);
+        printAllItemsInTable(DAYS_TABLE_NAME);
+        return pk;
+    }
+
+    public void endDay()
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+
+        Date curDate = new Date();
+        Long curTime = curDate.getTime();
+
+        Cursor CurActiveDay = findActiveDay();
+        if(CurActiveDay.getCount() == 1) {
+
+            CurActiveDay.moveToFirst();
+            long dayIdActive = CurActiveDay.getLong(CurActiveDay.getColumnIndex(DAYS_COL_ID));
+            String dayName = CurActiveDay.getString(CurActiveDay.getColumnIndex(DAYS_COL_NAME));
+            dayName += " - " +  DateFormat.getDateInstance(DateFormat.SHORT, Locale.CANADA).format(curDate);
+
+            contentValues.put(DAYS_COL_NAME, dayName);
+            contentValues.put(DAYS_SLEEPTIME, curTime);
+            contentValues.put(DAYS_IS_ACTIVE, 0);
+            db.update(DAYS_TABLE_NAME, contentValues, "_id  = ? ", new String[] { Long.toString(dayIdActive) } );
+
+            CurActiveDay.close();
+            printAllItemsInTable(DAYS_TABLE_NAME);
+        }
+        else
+        {
+            Log.e("DatabaseHelper", "more than one active day");
+        }
+
+
 
     }
 
+    public Cursor findActiveDay(){
 
+        SQLiteDatabase db = this.getReadableDatabase();
+        long task_id = 0;
+
+        String sqlQuery = "select * from " + DAYS_TABLE_NAME + " where " + DAYS_IS_ACTIVE +" = " + 1;
+        return db.rawQuery( sqlQuery, null );
+    }
+
+    //////////////////////////////////////////////////////////////////////////////////
+    //
+    //Debugging Functions
+    //
+    /////////////////////////////////////////////////////////////////////////////////
     public void printAllItemsInTable(String tableName)
     {
         SQLiteDatabase db = this.getReadableDatabase();

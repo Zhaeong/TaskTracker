@@ -1,5 +1,7 @@
 package io.github.zhaeong.worktracker;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.support.design.widget.FloatingActionButton;
@@ -45,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
     private ActionBarDrawerToggle mDrawerToggle;
 
     public final static String AddNew = "Add New Task";
-    public final static String TaskInfoScreen = "Task Info Screen";
+    public final static String TaskInfoScreen = "Days Info";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,15 +76,56 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
 
-        if (mDrawerToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
-        /*If click on icon
-        if(item.getItemId() == R.id.action_help)
+        if(item.getItemId() == R.id.action_wake)
         {
-            //do something when click on help
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+            builder
+                    .setCancelable(false)
+                    .setMessage("Wake Up?")
+                    .setPositiveButton("OK",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog,int id) {
+                                    myTaskDatabase.createDay();
+                                }
+                            })
+                    .setNegativeButton("Cancel",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog,int id) {
+                                    dialog.cancel();
+                                }
+                            });
+            AlertDialog dialog = builder.create();
+            dialog.show();
+
         }
-        */
+
+        if(item.getItemId() == R.id.action_sleep)
+        {
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+            builder
+                    .setCancelable(false)
+                    .setMessage("Sleep?")
+                    .setPositiveButton("OK",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog,int id) {
+                                    myTaskDatabase.endDay();
+                                }
+                            })
+                    .setNegativeButton("Cancel",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog,int id) {
+                                    dialog.cancel();
+                                }
+                            });
+            AlertDialog dialog = builder.create();
+            dialog.show();
+
+        }
+
+        if (mDrawerToggle.onOptionsItemSelected(item)) {
+           return true;
+        }
+
         return true;
     }
 
@@ -181,7 +224,7 @@ public class MainActivity extends AppCompatActivity {
     protected void populateList()
     {
         final TaskAdapter adapter =
-                new TaskAdapter(this, myTaskDatabase.getAllTasks());
+                new TaskAdapter(this, myTaskDatabase.getAllItemsInTable(CustomDBHelper.TASKS_TABLE_NAME));
         mListView = (ListView) findViewById(R.id.task_list);
         mListView.setAdapter(adapter);
 

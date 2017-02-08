@@ -2,12 +2,9 @@ package io.github.zhaeong.worktracker;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -19,7 +16,8 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import io.github.zhaeong.worktracker.TaskConstructs.TaskInfoAdapter;
+import io.github.zhaeong.worktracker.TaskConstructs.CustomDBHelper;
+import io.github.zhaeong.worktracker.TaskConstructs.DayInfoAdapter;
 
 public class TaskInfo extends AppCompatActivity {
 
@@ -127,8 +125,8 @@ public class TaskInfo extends AppCompatActivity {
 
     protected void populateList()
     {
-        final TaskInfoAdapter adapter =
-                new TaskInfoAdapter(this, MainActivity.myTaskDatabase.getAllTasks());
+        final DayInfoAdapter adapter =
+                new DayInfoAdapter(this, MainActivity.myTaskDatabase.getAllItemsInTable(CustomDBHelper.DAYS_TABLE_NAME));
         mListView = (ListView) findViewById(R.id.task_list_info);
         mListView.setAdapter(adapter);
 

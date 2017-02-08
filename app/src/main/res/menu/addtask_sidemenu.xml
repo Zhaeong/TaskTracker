@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:myapp="http://schemas.android.com/apk/res-auto">
 
     <item android:id="@+id/saveTask"
         android:title="@string/SaveTask" />
@@ -8,8 +9,10 @@
     <item android:id="@+id/deleteTask"
         android:title="@string/DeleteTask" />
 
+
     <!--
-    <item android:title="Help" myapp:showAsAction="always" android:icon="@drawable/ic_action_help" android:id="@+id/action_help"/>
+    <item android:title="Wake" myapp:showAsAction="always" android:icon="@drawable/ic_wake" android:id="@+id/action_wake"/>
     -->
+
 
 </menu>

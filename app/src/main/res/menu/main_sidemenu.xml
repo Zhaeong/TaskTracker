@@ -2,13 +2,17 @@
 
 <menu xmlns:myapp="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <!--
     <item android:id="@+id/wakeup"
         android:title="@string/wakeup" />
 
     <item android:id="@+id/sleep"
         android:title="@string/sleep" />
+    -->
 
-<!--
-    <item android:title="Help" myapp:showAsAction="always" android:icon="@drawable/ic_action_help" android:id="@+id/action_help"/>
--->
+    <item android:title="Wake" myapp:showAsAction="ifRoom" android:icon="@drawable/ic_wake" android:id="@+id/action_wake"/>
+
+    <item android:title="Sleep" myapp:showAsAction="ifRoom" android:icon="@drawable/ic_sleep" android:id="@+id/action_sleep"/>
+
+
 </menu>

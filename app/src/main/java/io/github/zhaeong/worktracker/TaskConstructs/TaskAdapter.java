@@ -31,7 +31,7 @@ public class TaskAdapter extends CursorAdapter{
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         // Find fields to populate in inflated template
-        TextView taskRowname = (TextView)view.findViewById(R.id.taskName);
+        TextView taskRowname = (TextView)view.findViewById(R.id.dayName);
 
         // Extract properties from cursor
         String taskName = cursor.getString(cursor.getColumnIndexOrThrow(CustomDBHelper.TASKS_COL_NAME));

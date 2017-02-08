@@ -17,10 +17,10 @@ import io.github.zhaeong.worktracker.R;
  * Created by Owen on 2017-01-24.
  */
 
-public class TaskInfoAdapter extends CursorAdapter{
+public class DayInfoAdapter extends CursorAdapter{
     Context context;
 
-    public TaskInfoAdapter(Context context, Cursor cursor)
+    public DayInfoAdapter(Context context, Cursor cursor)
     {
         super(context, cursor, 0);
     }
@@ -33,17 +33,17 @@ public class TaskInfoAdapter extends CursorAdapter{
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         // Find fields to populate in inflated template
-        TextView taskRowName = (TextView)view.findViewById(R.id.taskName);
+        TextView taskRowName = (TextView)view.findViewById(R.id.dayName);
 
-        TextView taskRowHours = (TextView)view.findViewById(R.id.taskHours);
+        //TextView taskRowHours = (TextView)view.findViewById(R.id.taskHours);
 
         // Extract properties from cursor
-        String taskName = cursor.getString(cursor.getColumnIndexOrThrow(CustomDBHelper.TASKS_COL_NAME));
-        Long nTimeElapsed = cursor.getLong(cursor.getColumnIndexOrThrow(CustomDBHelper.TASKS_ELAPSED));
+        String taskName = cursor.getString(cursor.getColumnIndexOrThrow(CustomDBHelper.DAYS_COL_NAME));
+        Long nTimeElapsed = cursor.getLong(cursor.getColumnIndexOrThrow(CustomDBHelper.DAYS_IS_ACTIVE));
 
 
         taskRowName.setText(taskName);
-        taskRowHours.setText(convertLongToString(nTimeElapsed));
+        //taskRowHours.setText(convertLongToString(nTimeElapsed));
     }
 
     static public String convertLongToString(long nTimeValue)
