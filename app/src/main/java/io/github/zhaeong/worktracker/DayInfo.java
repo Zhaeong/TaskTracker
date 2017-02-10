@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import io.github.zhaeong.worktracker.TaskConstructs.CustomDBHelper;
 import io.github.zhaeong.worktracker.TaskConstructs.DayInfoAdapter;
 
-public class TaskInfo extends AppCompatActivity {
+public class DayInfo extends AppCompatActivity {
 
 
     //List Variables
@@ -33,13 +33,14 @@ public class TaskInfo extends AppCompatActivity {
     private ActionBarDrawerToggle mDrawerToggle;
 
     public final static String MainTaskScreen = "Main Task Screen";
-    public final static String TASK_INFO_ID = "com.example.taskinfo.TASKID";
+    public final static String DAY_INFO_ID = "com.example.taskinfo.TASKID";
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_info);
+        setTitle("Day Info");
         SetUpDrawer();
         populateList();
     }
@@ -111,7 +112,7 @@ public class TaskInfo extends AppCompatActivity {
                 {
                     gotoMainTaskScreen();
                 }
-                Toast.makeText(TaskInfo.this, drawerItemsArray.get(position), Toast.LENGTH_SHORT).show();
+                Toast.makeText(DayInfo.this, drawerItemsArray.get(position), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -134,8 +135,8 @@ public class TaskInfo extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                Intent intent = new Intent(TaskInfo.this, TaskInfoDesc.class);
-                intent.putExtra(TASK_INFO_ID, id);
+                Intent intent = new Intent(DayInfo.this, DayInfoDesc.class);
+                intent.putExtra(DAY_INFO_ID, id);
 
                 startActivityForResult(intent, 1);
                 adapter.notifyDataSetChanged();

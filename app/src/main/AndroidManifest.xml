@@ -16,8 +16,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".AddTaskMenu" />
-        <activity android:name=".TaskInfo" />
-        <activity android:name=".TaskInfoDesc"></activity>
+        <activity android:name=".DayInfo" />
+        <activity android:name=".DayInfoDesc"/>
     </application>
 
 </manifest>

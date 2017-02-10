@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
 
+import io.github.zhaeong.worktracker.MainActivity;
 import io.github.zhaeong.worktracker.R;
 
 /**
@@ -31,26 +32,15 @@ public class TaskAdapter extends CursorAdapter{
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         // Find fields to populate in inflated template
-        TextView taskRowname = (TextView)view.findViewById(R.id.dayName);
+        TextView taskRowname = (TextView)view.findViewById(R.id.taskName);
+        TextView taskRowHours = (TextView)view.findViewById(R.id.taskHours);
+
+        Long nTimeElapsed = cursor.getLong(cursor.getColumnIndexOrThrow(CustomDBHelper.TASKS_ELAPSED));
 
         // Extract properties from cursor
         String taskName = cursor.getString(cursor.getColumnIndexOrThrow(CustomDBHelper.TASKS_COL_NAME));
+        taskRowHours.setText(MainActivity.convertLongToString(nTimeElapsed));
 
         taskRowname.setText(taskName);
     }
-
-/*
-    public View getView(int position, View convertView, ViewGroup parent) {
-
-        TaskObject taskObj = getItem(position);
-        if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_task_row, parent, false);
-        }
-
-        TextView taskRowname = (TextView)convertView.findViewById(R.id.taskName);
-        taskRowname.setText(taskObj.Name);
-
-        return convertView;
-
-    }*/
 }

@@ -18,5 +18,7 @@
     <string name="wakeup">Wake Up</string>
     <string name="sleep">Go to Sleep</string>
 
+    <string name="noActiveTask">No Active Task Currently</string>
+
 
 </resources>

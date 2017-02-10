@@ -5,7 +5,7 @@
     android:id="@+id/task_info"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="io.github.zhaeong.worktracker.TaskInfo">
+    tools:context="io.github.zhaeong.worktracker.DayInfo">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">

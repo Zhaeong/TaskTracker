@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import io.github.zhaeong.worktracker.TaskConstructs.CustomDBHelper;
 import io.github.zhaeong.worktracker.TaskConstructs.TaskAdapter;
@@ -70,7 +71,21 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main_sidemenu, menu);
+
         return true;
+    }
+
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        // If the nav drawer is open, hide action items related to the content view
+        if(myTaskDatabase.isThereActiveDay())
+        {
+            menu.findItem(R.id.action_wake).setVisible(false);
+        }
+        else
+        {
+            menu.findItem(R.id.action_sleep).setVisible(false);
+        }
+        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
@@ -86,6 +101,7 @@ public class MainActivity extends AppCompatActivity {
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog,int id) {
                                     myTaskDatabase.createDay();
+                                    invalidateOptionsMenu();
                                 }
                             })
                     .setNegativeButton("Cancel",
@@ -109,6 +125,9 @@ public class MainActivity extends AppCompatActivity {
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog,int id) {
                                     myTaskDatabase.endDay();
+                                    invalidateOptionsMenu();
+                                    RefreshView();
+
                                 }
                             })
                     .setNegativeButton("Cancel",
@@ -146,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
         }
         else
         {
-            curActiveTask.setText("No Active Task Currently");
+            curActiveTask.setText(R.string.noActiveTask);
         }
     }
 
@@ -214,17 +233,12 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        // If the nav drawer is open, hide action items related to the content view
-        boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
-        //menu.findItem(R.id.action_help).setVisible(!drawerOpen);
-        return super.onPrepareOptionsMenu(menu);
-    }
+
 
     protected void populateList()
     {
         final TaskAdapter adapter =
-                new TaskAdapter(this, myTaskDatabase.getAllItemsInTable(CustomDBHelper.TASKS_TABLE_NAME));
+                new TaskAdapter(this, myTaskDatabase.getAllUnfinishedTasks());
         mListView = (ListView) findViewById(R.id.task_list);
         mListView.setAdapter(adapter);
 
@@ -243,13 +257,21 @@ public class MainActivity extends AppCompatActivity {
 
     //Called when the user clicks the AddTask button
     public void addNewTask(View view) {
-        Intent intent = new Intent(this, AddTaskMenu.class);
-        startActivityForResult(intent, 1);
+        if(myTaskDatabase.isThereActiveDay())
+        {
+            Intent intent = new Intent(this, AddTaskMenu.class);
+            startActivityForResult(intent, 1);
+        }
+        else
+        {
+            Toast.makeText(getApplicationContext(), "Wake up before add tasks", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     public void openTaskInfoScreen()
     {
-        Intent intent = new Intent(this, TaskInfo.class);
+        Intent intent = new Intent(this, DayInfo.class);
         startActivity(intent);
     }
 
@@ -276,5 +298,13 @@ public class MainActivity extends AppCompatActivity {
             RefreshView();
             mDrawerLayout.closeDrawer(mDrawerList);
         }
+    }
+
+    static public String convertLongToString(long nTimeValue)
+    {
+        int nSeconds = (int) (nTimeValue / 1000) % 60;
+        int nMinutes = (int) (nTimeValue / (1000 * 60)) % 60;
+        int nHours = (int) (nTimeValue / (1000 *60 * 60));
+        return String.format(Locale.CANADA, "%d h %d m %d s",nHours, nMinutes, nSeconds);
     }
 }
