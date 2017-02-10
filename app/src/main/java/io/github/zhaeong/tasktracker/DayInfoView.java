@@ -18,7 +18,6 @@ import java.util.ArrayList;
 
 import io.github.zhaeong.tasktracker.TaskConstructs.CustomDBHelper;
 import io.github.zhaeong.tasktracker.TaskConstructs.DayInfoAdapter;
-import io.github.zhaeong.tasktracker.R;
 
 public class DayInfoView extends AppCompatActivity {
 
@@ -50,7 +49,7 @@ public class DayInfoView extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.taskinfo_sidemenu, menu);
+        //inflater.inflate(R.menu.dayinfo_sidemenu, menu);
         return true;
     }
 
@@ -60,6 +59,9 @@ public class DayInfoView extends AppCompatActivity {
         if (mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
+
+
+        finish();
 
         return true;
     }
@@ -144,5 +146,16 @@ public class DayInfoView extends AppCompatActivity {
             }
         });
     }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == 1) {
+
+
+            populateList();
+
+        }
+    }
+
 
 }

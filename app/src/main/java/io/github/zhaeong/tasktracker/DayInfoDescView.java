@@ -4,10 +4,14 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.util.Date;
@@ -19,7 +23,7 @@ import io.github.zhaeong.tasktracker.TaskConstructs.CustomDBHelper;
 public class DayInfoDescView extends AppCompatActivity {
 
     private long dayId = -1;
-
+    public final static int RESULT_DELETE = 20003;
     private ListView mTaskListView;
 
     @Override
@@ -72,6 +76,28 @@ public class DayInfoDescView extends AppCompatActivity {
         }
     }
 
+    //Set up to menu
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.dayinfo_sidemenu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        //If click on icon
+
+
+        if(item.getItemId() == R.id.deleteDay)
+        {
+            deleteTask();
+        }
+        finish();
+
+        return true;
+    }
+
 
     protected void populateList()
     {
@@ -99,4 +125,13 @@ public class DayInfoDescView extends AppCompatActivity {
             populateList();
         }
     }
+
+    public void deleteTask() {
+        Intent intent = new Intent(this, DayInfoView.class);
+        MainActivity.myTaskDatabase.deleteDay(dayId);
+        Toast.makeText(getApplicationContext(), "Task Deleted", Toast.LENGTH_SHORT).show();
+        setResult(RESULT_DELETE, intent);
+    }
+
 }
+

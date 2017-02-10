@@ -26,7 +26,7 @@ public class TaskInfoView extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.taskinfo_sidemenu, menu);
+        inflater.inflate(R.menu.addtask_sidemenu, menu);
         return true;
     }
 

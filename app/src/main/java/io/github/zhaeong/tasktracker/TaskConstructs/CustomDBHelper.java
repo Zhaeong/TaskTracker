@@ -378,6 +378,17 @@ public class CustomDBHelper extends SQLiteOpenHelper {
         return false;
     }
 
+    public void deleteDay(long dayId)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(DAYS_TABLE_NAME,
+                "_id = ? ",
+                new String[] { Long.toString(dayId) });
+        db.delete(TASKS_TABLE_NAME,
+                TASKS_COL_DAYID + "= ?",
+                new String[] { Long.toString(dayId) });
+    }
+
 
     //////////////////////////////////////////////////////////////////////////////////
     //
