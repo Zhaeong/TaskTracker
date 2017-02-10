@@ -1,4 +1,4 @@
-package io.github.zhaeong.worktracker;
+package io.github.zhaeong.tasktracker;
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -12,11 +12,11 @@ import android.widget.TextView;
 import java.text.DateFormat;
 import java.util.Date;
 
-import io.github.zhaeong.worktracker.TaskConstructs.CustomDBHelper;
-import io.github.zhaeong.worktracker.TaskConstructs.DayInfoAdapter;
-import io.github.zhaeong.worktracker.TaskConstructs.DayTaskInfoAdapter;
+import io.github.zhaeong.tasktracker.TaskConstructs.DayTaskInfoAdapter;
+import io.github.zhaeong.tasktracker.R;
+import io.github.zhaeong.tasktracker.TaskConstructs.CustomDBHelper;
 
-public class DayInfoDesc extends AppCompatActivity {
+public class DayInfoDescView extends AppCompatActivity {
 
     private long dayId = -1;
 
@@ -27,7 +27,7 @@ public class DayInfoDesc extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_info_desc);
 
-
+        setTitle("Day Description");
         Intent intent = getIntent();
 
         TextView Text_dayName = (TextView) findViewById(R.id.dayName);
@@ -36,8 +36,7 @@ public class DayInfoDesc extends AppCompatActivity {
         TextView Text_timeEla = (TextView) findViewById(R.id.timeElapsed);
 
 
-
-        dayId = intent.getLongExtra(DayInfo.DAY_INFO_ID, -1);
+        dayId = intent.getLongExtra(DayInfoView.DAY_INFO_ID, -1);
 
         if(dayId != -1)
         {
@@ -45,22 +44,29 @@ public class DayInfoDesc extends AppCompatActivity {
 
             String dayName = curTask.getString(curTask.getColumnIndexOrThrow(CustomDBHelper.DAYS_COL_NAME));
 
-            Long l_taskWakeTime = curTask.getLong(curTask.getColumnIndexOrThrow(CustomDBHelper.DAYS_WAKETIME));
-            Long l_taskSleepTime = curTask.getLong(curTask.getColumnIndexOrThrow(CustomDBHelper.DAYS_SLEEPTIME));
+            long l_taskWakeTime = curTask.getLong(curTask.getColumnIndexOrThrow(CustomDBHelper.DAYS_WAKETIME));
+            long l_taskSleepTime = curTask.getLong(curTask.getColumnIndexOrThrow(CustomDBHelper.DAYS_SLEEPTIME));
 
-            Long timeElapsed = l_taskSleepTime - l_taskWakeTime;
+            long timeElapsed = 0;
+
 
             Date DayWakeTime = new Date(l_taskWakeTime);
             Date DaySleepTime = new Date(l_taskSleepTime);
 
             String DayWakeDateString = DateFormat.getDateTimeInstance().format(DayWakeTime);
-            String DaySleepDateString = DateFormat.getDateTimeInstance().format(DaySleepTime);
+            String DaySleepDateString = "Day is still active.";
+
+            if(l_taskSleepTime != 0)
+            {
+                timeElapsed = l_taskSleepTime - l_taskWakeTime;
+                DaySleepDateString = DateFormat.getDateTimeInstance().format(DaySleepTime);
+            }
 
             Text_dayName.setText(dayName);
             Text_wakeTime.setText(DayWakeDateString);
             Text_sleepTime.setText(DaySleepDateString);
 
-            Text_timeEla.setText(DayInfoAdapter.convertLongToString(timeElapsed));
+            Text_timeEla.setText(MainActivity.convertLongToString(timeElapsed));
             populateList();
 
         }
@@ -78,12 +84,19 @@ public class DayInfoDesc extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                Intent intent = new Intent(DayInfoDesc.this, AddTaskMenu.class);
-                //intent.putExtra(TASK_ID, id);
+                Intent intent = new Intent(DayInfoDescView.this, TaskInfoView.class);
+                intent.putExtra(MainActivity.TASK_ID, id);
 
                 startActivityForResult(intent, 1);
                 adapter.notifyDataSetChanged();
             }
         });
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == 1) {
+            populateList();
+        }
     }
 }

@@ -1,4 +1,4 @@
-package io.github.zhaeong.worktracker;
+package io.github.zhaeong.tasktracker;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,10 +16,11 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import io.github.zhaeong.worktracker.TaskConstructs.CustomDBHelper;
-import io.github.zhaeong.worktracker.TaskConstructs.DayInfoAdapter;
+import io.github.zhaeong.tasktracker.TaskConstructs.CustomDBHelper;
+import io.github.zhaeong.tasktracker.TaskConstructs.DayInfoAdapter;
+import io.github.zhaeong.tasktracker.R;
 
-public class DayInfo extends AppCompatActivity {
+public class DayInfoView extends AppCompatActivity {
 
 
     //List Variables
@@ -32,7 +33,7 @@ public class DayInfo extends AppCompatActivity {
     private ArrayAdapter<String> mDrawerAdapter;
     private ActionBarDrawerToggle mDrawerToggle;
 
-    public final static String MainTaskScreen = "Main Task Screen";
+    public final static String MainTaskScreen = "Task Tracker";
     public final static String DAY_INFO_ID = "com.example.taskinfo.TASKID";
 
 
@@ -112,7 +113,7 @@ public class DayInfo extends AppCompatActivity {
                 {
                     gotoMainTaskScreen();
                 }
-                Toast.makeText(DayInfo.this, drawerItemsArray.get(position), Toast.LENGTH_SHORT).show();
+                Toast.makeText(DayInfoView.this, drawerItemsArray.get(position), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -135,7 +136,7 @@ public class DayInfo extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                Intent intent = new Intent(DayInfo.this, DayInfoDesc.class);
+                Intent intent = new Intent(DayInfoView.this, DayInfoDescView.class);
                 intent.putExtra(DAY_INFO_ID, id);
 
                 startActivityForResult(intent, 1);

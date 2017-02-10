@@ -1,23 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="io.github.zhaeong.worktracker">
+    package="io.github.zhaeong.tasktracker">
 
     <application
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name="io.github.zhaeong.tasktracker.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="http"
+                    android:host="www.zhaeong.github.io"
+                    android:pathPrefix="/app" />
             </intent-filter>
         </activity>
-        <activity android:name=".AddTaskMenu" />
-        <activity android:name=".DayInfo" />
-        <activity android:name=".DayInfoDesc"/>
+
+
+        <activity android:name="io.github.zhaeong.tasktracker.AddTaskView" >
+            <intent-filter android:label="@string/app_name">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <!-- Accepts URIs that begin with "http://www.example.com/gizmos” -->
+                <data android:scheme="http"
+                    android:host="www.zhaeong.github.io"
+                    android:pathPrefix="/app" />
+                <!-- note that the leading "/" is required for pathPrefix-->
+                <!-- Accepts URIs that begin with "example://gizmos” -->
+                <data android:scheme="example"
+                    android:host="tasktracker" />
+
+            </intent-filter>
+        </activity>
+
+
+
+
+        <activity android:name="io.github.zhaeong.tasktracker.DayInfoView" />
+        <activity android:name="io.github.zhaeong.tasktracker.DayInfoDescView" />
+        <activity android:name="io.github.zhaeong.tasktracker.TaskInfoView"/>
+
     </application>
 
 </manifest>

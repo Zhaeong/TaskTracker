@@ -1,4 +1,4 @@
-package io.github.zhaeong.worktracker;
+package io.github.zhaeong.tasktracker;
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -7,15 +7,15 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
-import io.github.zhaeong.worktracker.TaskConstructs.CustomDBHelper;
+import io.github.zhaeong.tasktracker.R;
+import io.github.zhaeong.tasktracker.TaskConstructs.CustomDBHelper;
 
-public class AddTaskMenu extends AppCompatActivity {
+public class AddTaskView extends AppCompatActivity {
     public final static int RESULT_ADD = 10001;
     public final static int RESULT_EDIT = 10002;
     public final static int RESULT_DELETE = 10003;
@@ -27,7 +27,8 @@ public class AddTaskMenu extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_task_menu);
+        setContentView(R.layout.activity_add_task_view);
+        setTitle("Edit Task");
 
         mTaskActivationToggle =  (ToggleButton)findViewById(R.id.taskActivationButton);
 

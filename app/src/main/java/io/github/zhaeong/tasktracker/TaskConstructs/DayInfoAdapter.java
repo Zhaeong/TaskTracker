@@ -1,4 +1,4 @@
-package io.github.zhaeong.worktracker.TaskConstructs;
+package io.github.zhaeong.tasktracker.TaskConstructs;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -8,9 +8,7 @@ import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
 
-import java.util.Locale;
-
-import io.github.zhaeong.worktracker.R;
+import io.github.zhaeong.tasktracker.R;
 
 /**
  * A custom adaptor for tasks
@@ -41,13 +39,4 @@ public class DayInfoAdapter extends CursorAdapter{
 
         taskRowName.setText(taskName);
     }
-
-    static public String convertLongToString(long nTimeValue)
-    {
-        int nSeconds = (int) (nTimeValue / 1000) % 60;
-        int nMinutes = (int) (nTimeValue / (1000 * 60)) % 60;
-        int nHours = (int) (nTimeValue / (1000 *60 * 60));
-        return String.format(Locale.CANADA, "%d h %d m %d s",nHours, nMinutes, nSeconds);
-    }
-
 }

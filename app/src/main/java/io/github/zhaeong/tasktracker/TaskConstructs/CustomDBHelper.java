@@ -1,4 +1,4 @@
-package io.github.zhaeong.worktracker.TaskConstructs;
+package io.github.zhaeong.tasktracker.TaskConstructs;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -166,8 +166,6 @@ public class CustomDBHelper extends SQLiteOpenHelper {
             Log.e("DatabaseHelper", "Get active day error");
             return -1;
         }
-
-
     }
 
     public boolean updateTask (Long task_id, String taskName, String taskDesc) {
@@ -200,7 +198,6 @@ public class CustomDBHelper extends SQLiteOpenHelper {
             result.moveToFirst();
         }
         return result;
-
     }
 
     public Integer deleteTask (Long task_id) {
@@ -291,19 +288,8 @@ public class CustomDBHelper extends SQLiteOpenHelper {
 
     public void finishAllTasksInDay(Long dayId)
     {
-
         SQLiteDatabase db = this.getWritableDatabase();
-
-        Cursor allCurUnfinishedTasks = getAllUnfinishedTasks();
-        allCurUnfinishedTasks.moveToFirst();
-
-        //Deactivate and add finish time
-        while (!allCurUnfinishedTasks.isAfterLast())
-        {
-            Long taskId = allCurUnfinishedTasks.getLong(allCurUnfinishedTasks.getColumnIndex(TASKS_COL_ID));
-            TaskActivation(taskId, 0);
-            allCurUnfinishedTasks.moveToNext();
-        }
+        deactivateCurActiveTask();
         ContentValues contentValues = new ContentValues();
         contentValues.put(TASK_IS_FINISHED, 1);
         db.update(TASKS_TABLE_NAME, contentValues, TASKS_COL_DAYID + " = ? ", new String[] { Long.toString(dayId) } );

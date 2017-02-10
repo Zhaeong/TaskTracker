@@ -1,4 +1,4 @@
-package io.github.zhaeong.worktracker;
+package io.github.zhaeong.tasktracker;
 
 import org.junit.Test;
 

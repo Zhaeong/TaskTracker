@@ -1,4 +1,4 @@
-package io.github.zhaeong.worktracker;
+package io.github.zhaeong.tasktracker;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("io.github.zhaeong.worktracker", appContext.getPackageName());
+        assertEquals("io.github.zhaeong.tasktracker", appContext.getPackageName());
     }
 }

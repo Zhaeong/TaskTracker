@@ -1,4 +1,4 @@
-package io.github.zhaeong.worktracker;
+package io.github.zhaeong.tasktracker;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -22,12 +22,9 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.Locale;
 
-import io.github.zhaeong.worktracker.TaskConstructs.CustomDBHelper;
-import io.github.zhaeong.worktracker.TaskConstructs.TaskAdapter;
-
-import static io.github.zhaeong.worktracker.AddTaskMenu.RESULT_ADD;
-import static io.github.zhaeong.worktracker.AddTaskMenu.RESULT_DELETE;
-import static io.github.zhaeong.worktracker.AddTaskMenu.RESULT_EDIT;
+import io.github.zhaeong.tasktracker.R;
+import io.github.zhaeong.tasktracker.TaskConstructs.CustomDBHelper;
+import io.github.zhaeong.tasktracker.TaskConstructs.TaskAdapter;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -48,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
     private ActionBarDrawerToggle mDrawerToggle;
 
     public final static String AddNew = "Add New Task";
-    public final static String TaskInfoScreen = "Days Info";
+    public final static String TaskInfoScreen = "List of Days";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -246,7 +243,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                Intent intent = new Intent(MainActivity.this, AddTaskMenu.class);
+                Intent intent = new Intent(MainActivity.this, AddTaskView.class);
                 intent.putExtra(TASK_ID, id);
 
                 startActivityForResult(intent, 1);
@@ -259,7 +256,7 @@ public class MainActivity extends AppCompatActivity {
     public void addNewTask(View view) {
         if(myTaskDatabase.isThereActiveDay())
         {
-            Intent intent = new Intent(this, AddTaskMenu.class);
+            Intent intent = new Intent(this, AddTaskView.class);
             startActivityForResult(intent, 1);
         }
         else
@@ -271,21 +268,21 @@ public class MainActivity extends AppCompatActivity {
 
     public void openTaskInfoScreen()
     {
-        Intent intent = new Intent(this, DayInfo.class);
+        Intent intent = new Intent(this, DayInfoView.class);
         startActivity(intent);
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         if (requestCode == 1) {
-            if(resultCode == RESULT_ADD){
+            if(resultCode == AddTaskView.RESULT_ADD){
 
             }
-            if(resultCode == RESULT_EDIT)
+            if(resultCode == AddTaskView.RESULT_EDIT)
             {
 
             }
-            if(resultCode == RESULT_DELETE)
+            if(resultCode == AddTaskView.RESULT_DELETE)
             {
 
             }
@@ -305,6 +302,6 @@ public class MainActivity extends AppCompatActivity {
         int nSeconds = (int) (nTimeValue / 1000) % 60;
         int nMinutes = (int) (nTimeValue / (1000 * 60)) % 60;
         int nHours = (int) (nTimeValue / (1000 *60 * 60));
-        return String.format(Locale.CANADA, "%d h %d m %d s",nHours, nMinutes, nSeconds);
+        return String.format(Locale.CANADA, "%dh %dm %ds",nHours, nMinutes, nSeconds);
     }
 }

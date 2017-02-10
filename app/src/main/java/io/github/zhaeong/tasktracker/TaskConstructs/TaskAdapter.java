@@ -1,4 +1,4 @@
-package io.github.zhaeong.worktracker.TaskConstructs;
+package io.github.zhaeong.tasktracker.TaskConstructs;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -7,9 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
-import io.github.zhaeong.worktracker.MainActivity;
-import io.github.zhaeong.worktracker.R;
+import io.github.zhaeong.tasktracker.MainActivity;
+import io.github.zhaeong.tasktracker.R;
 
 /**
  * A custom adaptor for tasks
@@ -17,6 +18,9 @@ import io.github.zhaeong.worktracker.R;
  */
 
 public class TaskAdapter extends CursorAdapter{
+
+    private ToggleButton mTaskActivationToggle;
+
     Context context;
 
     public TaskAdapter(Context context, Cursor cursor)
@@ -30,8 +34,9 @@ public class TaskAdapter extends CursorAdapter{
     }
 
     @Override
-    public void bindView(View view, Context context, Cursor cursor) {
+    public void bindView(final View view, final Context context, Cursor cursor) {
         // Find fields to populate in inflated template
+
         TextView taskRowname = (TextView)view.findViewById(R.id.taskName);
         TextView taskRowHours = (TextView)view.findViewById(R.id.taskHours);
 
@@ -43,4 +48,6 @@ public class TaskAdapter extends CursorAdapter{
 
         taskRowname.setText(taskName);
     }
+
+
 }

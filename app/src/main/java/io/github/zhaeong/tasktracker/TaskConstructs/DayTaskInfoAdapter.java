@@ -1,4 +1,4 @@
-package io.github.zhaeong.worktracker.TaskConstructs;
+package io.github.zhaeong.tasktracker.TaskConstructs;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -8,10 +8,8 @@ import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
 
-import java.util.Locale;
-
-import io.github.zhaeong.worktracker.MainActivity;
-import io.github.zhaeong.worktracker.R;
+import io.github.zhaeong.tasktracker.MainActivity;
+import io.github.zhaeong.tasktracker.R;
 
 /**
  * A custom adaptor for tasks
