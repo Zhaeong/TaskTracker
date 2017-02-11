@@ -11,40 +11,67 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:text="TextView"
-            android:background="@drawable/border"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/activeTaskDisplay"
-            android:layout_alignParentBottom="true"
-            android:textSize="30sp"
-            android:layout_margin="10dp"
-            android:maxLines="1" />
+            android:orientation="vertical"
+            android:id="@+id/curTaskDisplay"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:paddingTop="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp">
+
+            <TextView
+                android:text="Current Task"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView5" />
+
+            <TextView
+                android:text="TextView"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/activeTaskDisplay"
+                android:layout_alignParentBottom="true"
+                android:textSize="30sp"
+                android:maxLines="1"
+                android:textStyle="normal|bold"
+                 />
+
+        </LinearLayout>
 
         <ListView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@drawable/border"
             android:id="@+id/task_list"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:layout_below="@+id/curTaskDisplay"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_margin="10dp"
-            android:layout_above="@id/activeTaskDisplay"/>
+            android:layout_alignParentStart="true" />
 
         <android.support.design.widget.FloatingActionButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:clickable="true"
-            app:fabSize="mini"
+            app:fabSize="normal"
             app:srcCompat="@android:drawable/ic_input_add"
             android:id="@+id/addtaskFAB"
-            app:elevation="7dp"
-            android:layout_above="@+id/activeTaskDisplay"
-            android:layout_alignRight="@+id/task_list"
-            android:layout_alignEnd="@+id/task_list"
-            android:layout_marginRight="14dp"
-            android:layout_marginEnd="14dp"
-            app:backgroundTint="?attr/actionModeSplitBackground" />
+            app:elevation="10dp"
+            app:backgroundTint="?attr/actionModeSplitBackground"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_alignParentBottom="true"
+
+            android:layout_gravity="end|bottom"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginBottom="20dp" />
+
 
     </RelativeLayout>
 

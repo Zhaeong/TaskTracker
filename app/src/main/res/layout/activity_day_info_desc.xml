@@ -11,17 +11,6 @@
     tools:context="io.github.zhaeong.tasktracker.DayInfoDescView">
 
     <TextView
-        android:text="TextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/creationdatelabel"
-        android:layout_toRightOf="@+id/creationdatelabel"
-        android:layout_toEndOf="@+id/creationdatelabel"
-        android:id="@+id/wakeTime"
-        android:paddingLeft="10dp"
-        android:textSize="20sp" />
-
-    <TextView
         android:text="Day End:"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -29,18 +18,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:id="@+id/startdatelabel"
-        android:textSize="20sp" />
-
-    <TextView
-        android:text="TextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/creationdatelabel"
-        android:layout_toRightOf="@+id/startdatelabel"
-        android:layout_toEndOf="@+id/startdatelabel"
-        android:id="@+id/sleepTime"
-        android:paddingLeft="10dp"
-        android:textSize="20sp" />
+        android:textSize="18sp" />
 
     <TextView
         android:text="Duration:"
@@ -50,19 +28,7 @@
         android:layout_below="@+id/startdatelabel"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:textSize="20sp" />
-
-    <TextView
-        android:text="TextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/timeElapsed"
-        android:paddingLeft="10dp"
-        android:layout_alignBaseline="@+id/dayElapsed"
-        android:layout_alignBottom="@+id/dayElapsed"
-        android:layout_toRightOf="@+id/dayElapsed"
-        android:layout_toEndOf="@+id/dayElapsed"
-        android:textSize="20sp" />
+        android:textSize="18sp" />
 
     <TextView
         android:text="Day Name"
@@ -103,5 +69,40 @@
         android:layout_below="@+id/dayName"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:textSize="20sp" />
+        android:textSize="18sp" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/timeElapsed"
+        android:paddingLeft="10dp"
+        android:textSize="18sp"
+        android:layout_alignTop="@+id/dayElapsed"
+        android:layout_alignLeft="@+id/sleepTime"
+        android:layout_alignStart="@+id/sleepTime" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/wakeTime"
+        android:paddingLeft="10dp"
+        android:textSize="18sp"
+        android:layout_below="@+id/dayName"
+        android:layout_toRightOf="@+id/creationdatelabel"
+        android:layout_toEndOf="@+id/creationdatelabel"
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/sleepTime"
+        android:paddingLeft="10dp"
+        android:textSize="18sp"
+        android:layout_below="@+id/wakeTime"
+        android:layout_alignLeft="@+id/wakeTime"
+        android:layout_alignStart="@+id/wakeTime" />
 </RelativeLayout>

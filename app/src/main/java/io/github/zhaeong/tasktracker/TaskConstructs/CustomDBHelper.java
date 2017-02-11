@@ -101,14 +101,14 @@ public class CustomDBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(TABLE_CREATE_TASKS);
         db.execSQL(TABLE_CREATE_DAYS);
-        Log.i("DatabaseHelper", "executed onCreate");
+        //Log.i("DatabaseHelper", "executed onCreate");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS" + TASKS_TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS" + DAYS_TABLE_NAME);
-        Log.i("DatabaseHelper", "executed onUpgrade");
+        //Log.i("DatabaseHelper", "executed onUpgrade");
         onCreate(db);
     }
 
@@ -163,7 +163,7 @@ public class CustomDBHelper extends SQLiteOpenHelper {
         }
         else
         {
-            Log.e("DatabaseHelper", "Get active day error");
+            //Log.e("DatabaseHelper", "Get active day error");
             return -1;
         }
     }
@@ -174,7 +174,7 @@ public class CustomDBHelper extends SQLiteOpenHelper {
         contentValues.put(TASKS_COL_NAME, taskName);
         contentValues.put(TASKS_COL_DESC, taskDesc);
         db.update(TASKS_TABLE_NAME, contentValues, "_id  = ? ", new String[] { Long.toString(task_id) } );
-        Log.i("DatabaseHelper", "executed updateTask, TaskID: " + task_id + " TaskName: " + taskName);
+        //Log.i("DatabaseHelper", "executed updateTask, TaskID: " + task_id + " TaskName: " + taskName);
         return true;
     }
 
@@ -245,7 +245,7 @@ public class CustomDBHelper extends SQLiteOpenHelper {
         }
 
         db.update(TASKS_TABLE_NAME, contentValues, "_id  = ? ", new String[] { Long.toString(task_id) } );
-        Log.i("DatabaseHelper", "executed TaskActivation, TaskID: " + task_id + ", isActive:" + isActive);
+        //Log.i("DatabaseHelper", "executed TaskActivation, TaskID: " + task_id + ", isActive:" + isActive);
         return true;
 
     }
@@ -262,7 +262,7 @@ public class CustomDBHelper extends SQLiteOpenHelper {
         }
         else
         {
-            Log.e("DatabaseHelper", "unable to getTaskInfo");
+            //Log.e("DatabaseHelper", "unable to getTaskInfo");
         }
         curResult.close();
         return resultInfo;
@@ -281,7 +281,7 @@ public class CustomDBHelper extends SQLiteOpenHelper {
         }
         else
         {
-            Log.e("DatabaseHelper", "More than 1 active task at a time");
+            //Log.e("DatabaseHelper", "More than 1 active task at a time");
         }
         curResult.close();
     }
@@ -309,7 +309,7 @@ public class CustomDBHelper extends SQLiteOpenHelper {
         Date curDate = new Date();
         Long curTime = curDate.getTime();
         //String dayName = DateFormat.getDateInstance(DateFormat.SHORT, Locale.CANADA).format(curDate);
-        SimpleDateFormat SDF = new SimpleDateFormat("MM/dd hh:mm");
+        SimpleDateFormat SDF = new SimpleDateFormat("EEE, d MMM, h:mm a");
         String dayName = SDF.format(curDate);
 
         contentValues.put(DAYS_COL_NAME, dayName);
@@ -335,8 +335,8 @@ public class CustomDBHelper extends SQLiteOpenHelper {
             long dayIdActive = CurActiveDay.getLong(CurActiveDay.getColumnIndex(DAYS_COL_ID));
             String dayName = CurActiveDay.getString(CurActiveDay.getColumnIndex(DAYS_COL_NAME));
 
-            SimpleDateFormat SDF = new SimpleDateFormat("MM/dd hh:mm");
-            dayName += " - " +  SDF.format(curDate);
+            SimpleDateFormat SDF = new SimpleDateFormat("EEE, d MMM, h:mm a");
+            dayName += " to \n" +  SDF.format(curDate);
 
             finishAllTasksInDay(dayIdActive);
 
@@ -350,9 +350,8 @@ public class CustomDBHelper extends SQLiteOpenHelper {
         }
         else
         {
-            Log.e("DatabaseHelper", "more than one active day");
+            //Log.e("DatabaseHelper", "more than one active day");
         }
-
     }
 
     public Cursor findActiveDay(){
@@ -415,7 +414,7 @@ public class CustomDBHelper extends SQLiteOpenHelper {
 
                 res.moveToNext();
             }
-            Log.i("DatabaseHelper", loggerMSG);
+            //Log.i("DatabaseHelper", loggerMSG);
         }
         finally {
             res.close();

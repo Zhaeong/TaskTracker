@@ -17,7 +17,6 @@ import java.text.DateFormat;
 import java.util.Date;
 
 import io.github.zhaeong.tasktracker.TaskConstructs.DayTaskInfoAdapter;
-import io.github.zhaeong.tasktracker.R;
 import io.github.zhaeong.tasktracker.TaskConstructs.CustomDBHelper;
 
 public class DayInfoDescView extends AppCompatActivity {
@@ -29,7 +28,7 @@ public class DayInfoDescView extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_task_info_desc);
+        setContentView(R.layout.activity_day_info_desc);
 
         setTitle("Day Description");
         Intent intent = getIntent();
